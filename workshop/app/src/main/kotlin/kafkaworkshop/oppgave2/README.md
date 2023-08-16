@@ -1,6 +1,6 @@
 # Oppgave 2 Kafka Producer
 
-## Åpne Producer.kt.
+## Åpne Producer.kt
 Den inneholder skjelettet for å kjøre en producer mot kafka topic. Det er to kodebolker der, en for felleskode med neste oppgave som er å lage en consumer.
 Og en main metode som kan starte produceren.
 
@@ -51,3 +51,13 @@ Verifiser at oppgave 1 sin consumer har motatt en melding på følgende format:
 ```json
 {"id":"1","value":"a value"}
 ```
+
+## KLlargjør for neste oppgave ved å henvise til nytt topic
+Vi vil ha et tomt topic som kun skal få riktig format på meldingene
+Endre topic til:
+```kotlin
+const val topic = "kotlin_topic"
+```
+
+## Tilslutt send en melding på det nye topicet.
+Start main metoden på nytt, og verifiser at kallet ikke feiler. Det ligger nå klart en melding på det nye topicet for neste oppgave.

@@ -1,14 +1,13 @@
 # Oppgave 2a Kafka Producer
 
 ## Åpne Producer.kt
-Den inneholder skjelettet for å kjøre en producer mot kafka topic. Det er to kodebolker der, en for felleskode med neste oppgave som er å lage en consumer.
-Og en main metode som kan starte produceren.
+Filen inneholder skjelettet for å kjøre en producer mot et Kafka topic. Det er to kodeblokker der: en for felleskode med neste oppgave, som er å lage en consumer, og en main-metode som kan starte produceren.
 
-## Over main metoden, legg inn verdiene for Common objektet.
-Dette er et objekt som inneholder topicnavn og et objekt som representerer meldingene som som skal produseres.
-Det skal senere kunne gjenbrukes av consumer i neste oppgave, så det leggges utenfor main metoden.
-Vi bruker her samme topic som ble satt opp i oppgave 1, slik at vi i første omgang kan se endringene i samme consumer som ble laget der.
-Pass på at consumer i oppgave 1 fortsatt kjører.
+## Over main-metoden, legg inn verdiene for Common objektet.
+Dette er et objekt som inneholder topicnavn og et objekt som representerer meldingene som skal produseres. 
+Det skal senere kunne gjenbrukes av consumer i neste oppgave, så det plasseres utenfor main-metoden. 
+Vi bruker her samme topic som ble satt opp i oppgave 1.
+Pass på at consumer fra oppgave 1 fortsatt kjører.
 ```kotlin
 object Common {
     const val topic = "first_topic"
@@ -16,8 +15,8 @@ object Common {
 }
 ```
 
-## Definerer konfigurasjonen for vår Kafka producer
-Inkluder hvor Kafka-serveren kjører og hvordan meldingsnøklene og verdiene skal serialiseres.
+## Definer konfigurasjonen for vår Kafka producer
+Inkluder hvor Kafka-serveren kjører, og hvordan meldingsnøklene og verdiene skal serialiseres.
 ```kotlin
 val producerProperties = mapOf<String, Any>(
     ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
@@ -27,15 +26,21 @@ val producerProperties = mapOf<String, Any>(
 )
 ```
 
-## Lag en melding som skal produseres, gjør den om til json string, og opprett en kafka record som er klargjort for sending via kafka.
+## Lag en KafkaPrducer med konfigurasjonen over, og bruk en 'kotlin use block' som rydder opp ressurser fordi den blokken blir autoCloseable
+```kotlin
+KafkaProducer<String, String>(producerProperties).use { producer ->
+    // TODO: Legg inn resten av koden for oppgaven her
+}
+```
 
+## Lag en melding som skal produseres, konverter den til en json-streng, og opprett en Kafka record som er klargjort for sending via Kafka.
 ```kotlin
 val message = Common.Message(id = "1", value = "a value")
 val jsonMessage: String = jacksonObjectMapper().writeValueAsString(message)
 val record = ProducerRecord(topic, "key", jsonMessage)
 ```
 
-## Sending av kafka meldingen skjer via producer.send
+## Send meldingen
 ```kotlin 
 try {
     logger.info("Sending message $jsonMessage")
@@ -52,12 +57,11 @@ Verifiser at oppgave 1 sin consumer har motatt en melding på følgende format:
 {"id":"1","value":"a value"}
 ```
 
-## KLlargjør for neste oppgave ved å henvise til nytt topic
-Vi vil ha et tomt topic som kun skal få riktig format på meldingene
-Endre topic til:
+## Klargjør for neste oppgave ved å henvise til et nytt topic
+Vi vil ha et tomt topic som kun skal ha riktig format på meldingene. Endre topic til:
 ```kotlin
 const val topic = "kotlin_topic"
 ```
 
-## Tilslutt send en melding på det nye topicet.
-Start main metoden på nytt, og verifiser at kallet ikke feiler. Det ligger nå klart en melding på det nye topicet for neste oppgave.
+## Til slutt, send en melding på det nye topicet.
+Start main-metoden på nytt, og verifiser at kallet ikke feiler. Det ligger nå klart en melding på det nye topicet for neste oppgave.

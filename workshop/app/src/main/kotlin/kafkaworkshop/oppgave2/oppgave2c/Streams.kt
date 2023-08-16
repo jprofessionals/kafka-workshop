@@ -16,5 +16,5 @@ fun main() {
 
     val inputTopic = "first_topic"
 
-    // TODO: Oppgave 4
+    // TODO: Oppgave 2c
 }

@@ -1,10 +1,10 @@
 package no.jpro.kafkaworkshop.oppgave3
 
-import no.jpro.kafkaworkshop.Common.Message
-import no.jpro.kafkaworkshop.Common.logger
-import no.jpro.kafkaworkshop.Common.objectMapper
-import no.jpro.kafkaworkshop.Common.topic
-import org.apache.kafka.clients.consumer.Consumer
+import no.jpro.kafkaworkshop.oppgave2.Common
+import no.jpro.kafkaworkshop.oppgave2.Common.Message
+import no.jpro.kafkaworkshop.oppgave2.Common.logger
+import no.jpro.kafkaworkshop.oppgave2.Common.objectMapper
+import no.jpro.kafkaworkshop.oppgave2.Common.topic
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer

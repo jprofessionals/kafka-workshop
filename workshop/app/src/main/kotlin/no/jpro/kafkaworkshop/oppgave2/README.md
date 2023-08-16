@@ -3,6 +3,9 @@
 ## Formål
 Bli kjent med de grunnleggende byggesteinene som workshopen vil fokusere på.
 
+## Før du starter
+
+
 ## Ekstraoppgaver for oppgave 2 (hvis du har tid til overs)
 
 ### Ekstraoppgave for oppgave2a: Ytelsesoptimalisering

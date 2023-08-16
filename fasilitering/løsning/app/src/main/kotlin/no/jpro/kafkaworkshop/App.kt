@@ -3,13 +3,37 @@
  */
 package no.jpro.kafkaworkshop
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.kafka.clients.CommonClientConfigs
+import org.apache.kafka.clients.producer.KafkaProducer
+import org.apache.kafka.clients.producer.ProducerConfig
+import org.apache.kafka.clients.producer.ProducerRecord
+import org.apache.kafka.common.serialization.StringSerializer
+import org.slf4j.LoggerFactory
+
+
+val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop")
+val objectMapper = ObjectMapper()
+
+data class Melding(val id: String, val verdi: String)
 
 fun main() {
-    println(App().greeting)
+    val topic = "first_topic"
+
+    val producerProps = mapOf<String, Any>(
+        ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
+        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java.name,
+        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java.name,
+        CommonClientConfigs.SECURITY_PROTOCOL_CONFIG to "PLAINTEXT"
+    )
+
+    val producer = KafkaProducer<String, String>(producerProps)
+
+    val melding = Melding(id = "1", verdi = "en verdi")
+
+    val jsonMelding: String = objectMapper.writeValueAsString(melding)
+    val record = ProducerRecord(topic, "key", jsonMelding)
+    producer.send(record)
+
+    producer.close()
 }

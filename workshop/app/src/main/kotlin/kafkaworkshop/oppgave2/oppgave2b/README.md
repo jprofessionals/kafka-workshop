@@ -1,17 +1,21 @@
 # Oppgave 2b Kafka Consumer
 
 ## Åpne Consumer.kt
-Den inneholder skjelettet for å kjøre en consumer mot kafka topic.
-Det er der en main metode som kan starte produceren. 
+Filen inneholder skjelettet for å kjøre en consumer mot en Kafka topic.
 
-## Hent inn topicnavn og meldingsobject fra oppgave 1 i imports
+## Hent inn topicnavn og meldingsobjekt fra oppgave 2a i imports
 import no.jpro.kafkaworkshop.oppgave2.oppgave2a.Common.Message
 import no.jpro.kafkaworkshop.oppgave2.oppgave2a.Common.topic
 
-## Definerer konfigurasjonen for vår Kafka consumer
-Inkluder hvor Kafka-serveren kjører og hvordan meldingsnøklene og verdiene skal deserialiseres.
-Legg inn en groupid som identifiserer denne consumergruppen. Om denne applikasjonen kjørte i et clulster sammen med andre noder med samme groupid, ville meldingene blitt fordelt mellom consumernodene.
-Som i oppgave 1, så velger vi "earlierst" som konfigurasjon, slik at vi starter på starten av topic første gangen denne klienten kjører mot topic.
+## Opprett en instans av jacksonObjektmapper som kan brukes til å opprettte Message objekter av meldinger
+```kotlin
+val jacksonObjectMapper = jacksonObjectMapper()
+```
+
+## Definer konfigurasjonen for vår Kafka consumer
+Inkluder informasjon om hvor Kafka-serveren kjører og hvordan meldingsnøklene og verdiene skal deserialiseres.
+Legg til en groupid som identifiserer consumergruppen. Hvis denne applikasjonen kjørte i et cluster sammen med andre noder med samme groupid, ville meldingene blitt fordelt mellom consumernodene.
+Som i oppgave 1, velger vi "earliest" som konfigurasjon, slik at vi starter fra begynnelsen av topicen første gang denne klienten kjører.
 ```kotlin
 val consumerProps = mapOf(
         ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
@@ -22,35 +26,34 @@ val consumerProps = mapOf(
     )
 ```
 
-## Lag en KafkaConsumer med konfigurasjonen over, og bruk en 'kotlin use block' som rydder opp ressurser fordi den blokken blir autoCloseable
+## Opprett en KafkaConsumer med den angitte konfigurasjonen og bruk en 'kotlin use block'. Dette sørger for at ressursene ryddes opp etter bruk, ettersom denne blokken er autocloseable.
 ```kotlin
-KafkaConsumer<String, String>(consumerProps).use { consumer -> 
-        // TODO: koden for resten av oppgaven legges i use-kode-blokken, for å sikre at den er autocloseable
-        
+KafkaConsumer<String, String>(consumerProps).use { consumer ->
+    // TODO: Legg inn resten av koden i denne use-kode-blokken for å sikre at ressurser lukkes automatisk
 }
-        
 ```
 
-## Lytt på meldingene på topicet
+## Lytt på meldingene fra topicet
 ```kotlin
 consumer.subscribe(listOf(topic))
 ```
 
-## Lag en løkke for å ha kontinuerlig lytting på topic
-while(true) gir ikke optimal prosessorutnyuttelse, og kan ha en del andre utfordringer, men det er tilstrekkelig for en workshop.
+## Opprett en løkke for kontinuerlig overvåkning av topicet
+Selv om while(true) ikke er optimal for prosessorutnyttelse og kan medføre utfordringer i produksjonsmiljøer, fungerer det fint for denne workshopen.
 ```kotlin
 while (true) {
- // resten av koden går inn her
+    // resten av koden legges her
 }
 ```
 
-## Hent ut en melding, sett timeout til 1/10 sekund
+## Hent ut meldinger og bruk timeout på 1/10 sekund per melding
 ```kotlin
 val records = consumer.poll(Duration.ofMillis(100))
 ```
 
-## Default oppsett som vi har, gjør at vi får 500 medlinger om gangen.
-Gå gjennom hver melding, og konverter den til producers Message format
+
+## Gå gjennom hver melding og konverter den til producerens Message-format
+Med vårt standard oppsett kan vi få opp til 500 meldinger om gangen.
 ```kotlin
  records.forEach { record ->
                 logger.info("Consumed record with key ${record.key()} and value ${record.value()}")
@@ -64,7 +67,7 @@ Gå gjennom hver melding, og konverter den til producers Message format
             }
 ```
 
-## Start consumer
+## Start consumeren
 Du skal se følgende i loggen:
 ```Consumed record with key key and value {"id":"1","value":"a value"}```
     

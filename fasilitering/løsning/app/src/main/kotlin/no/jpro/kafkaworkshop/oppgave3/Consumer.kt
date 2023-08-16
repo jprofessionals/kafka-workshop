@@ -1,16 +1,19 @@
 package no.jpro.kafkaworkshop.oppgave3
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.jpro.kafkaworkshop.oppgave2.Common
 import no.jpro.kafkaworkshop.oppgave2.Common.Message
-import no.jpro.kafkaworkshop.oppgave2.Common.logger
-import no.jpro.kafkaworkshop.oppgave2.Common.objectMapper
 import no.jpro.kafkaworkshop.oppgave2.Common.topic
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.slf4j.LoggerFactory
 import java.time.Duration
 
 fun main() {
+    val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.consumer")
+
+
     val consumerProps = mapOf(
         ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
         ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
@@ -28,7 +31,7 @@ fun main() {
                 logger.info("Consumed record with key ${record.key()} and value ${record.value()}")
 
                 try {
-                    val message: Message = objectMapper.readValue(record.value(), Message::class.java)
+                    val message: Message = jacksonObjectMapper().readValue(record.value(), Message::class.java)
                     logger.info("Deserialized Message: $message")
                 } catch (e: Exception) {
                     logger.error("Error deserializing record value: ${record.value()}", e)

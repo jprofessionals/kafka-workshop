@@ -15,8 +15,8 @@ fun main() {
     val logger = LoggerFactory.getLogger("no.jpro.kafkaworkshop.streams")
 
     val inputTopic = "first_topic"
-    val streamsConfiguration = Properties()
 
+    val streamsConfiguration = Properties()
     streamsConfiguration[StreamsConfig.APPLICATION_ID_CONFIG] = "stream-1"
     streamsConfiguration[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092"
     streamsConfiguration[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
@@ -30,8 +30,8 @@ fun main() {
 
     val builder = StreamsBuilder()
     val textLines: KStream<String, String> = builder.stream(inputTopic)
-    val pattern = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS)
 
+    val pattern = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS)
     val wordCounts: KTable<String, Long> = textLines
         .flatMapValues { value -> pattern.split(value.lowercase(Locale.getDefault())).asIterable() }
         .groupBy { _, word -> word }

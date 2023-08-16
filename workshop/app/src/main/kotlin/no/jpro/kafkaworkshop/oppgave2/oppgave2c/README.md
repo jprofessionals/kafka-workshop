@@ -1,17 +1,17 @@
 # Oppgave 2c Kafka Streams
 
 ## Åpne Streams.kt
-Den inneholder skjelettet for å aggregere antall ganger en melding tidligere er sendt på topic. 
-Vi skal bruke Kafka Streams for å lagre tilstanden mellom oppstarter, uavhengig av om meldingene fortsatt ligger på topicet.
+Filen inneholder skjelettet for summering av antall ganger en melding tidligere er sendt i et topic.
+Vi skal benytte Kafka Streams for summeringen, og for å lagre tilstand mellom oppstarter, selv om meldingene ikke lenger finnes på topicet.
 
-## Vi bruker topic fra oppgave 1. 
-Den har allerede litt data, og det er enkelt å legge inn nye meldinger via cli
+## Vi bruker topic fra oppgave 1, first_topic
+Topicet inneholder allerede noe data. Det er også enkelt å legge til nye meldinger via CLI.
 ```kotlin
     val inputTopic = "first_topic"
 ```
 
 ## Sett opp konfigurasjonen
-Denne gangen bruker vi streams biblioteket for å sette opp konfigurasjonen. 
+Denne gangen skal vi bruke Kafka Streams-biblioteket for konfigurering.
 
 ```kotlin
     val streamsConfiguration = Properties()
@@ -26,18 +26,17 @@ Denne gangen bruker vi streams biblioteket for å sette opp konfigurasjonen.
     streamsConfiguration[ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG] = "6000"
     streamsConfiguration[ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG] = "1000"
  ```
+Kafka Streams bruker "Serdes" for serialisering/deserialisering, som gir en enhetlig metode for typesikker håndtering.
+[StreamsConfig.STATE_DIR_CONFIG] peker til et område for rask henting av meldinger ved oppstart. Dette plasseres i roten av workshop-mappen, og viser data for en RocksDB database.
 
-Kafka streams bruker serdes som serialisering/deserialisering, for å gi en ensartet mekanisme for å håndtere det på en typetrygg måte, og for å lette integrasjonen med Kafka's innebygde dataformater.
-```[StreamsConfig.STATE_DIR_CONFIG] ``` Refererer til område for hurtig henting av medlinger ved oppstart. Dette legges på roten i workshop mappen, og viser data på RocksDB format.
-
-##  Opprett en kafka stream mot topic
+##  Opprett en kafka Stream for topicet
 ```kotlin
 val builder = StreamsBuilder()
 val textLines: KStream<String, String> = builder.stream(inputTopic)
 ```
 
-## Tell antall forekomster av et ord, og skriv antallet til loggen
-Om et ord kommer flere ganger i en melding, telles det flere ganger.
+## Tell antall forekomster av et ord og logg antallet
+Hvis et ord forekommer flere ganger i en melding, skal det telles hver gang.
  ```kotlin
  val pattern = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS)
 
@@ -48,18 +47,17 @@ val wordCounts: KTable<String, Long> = textLines
 
 wordCounts.toStream().foreach { word, count -> logger.info("word: $word -> $count") }
 ```
-KTable er databaselignende tabeller som lagres i en statestore, i vårt tiilfelle RocksDb
+KTable representerer databaselignende tabeller som lagres i en "state store". I vårt tilfelle benyttes RocksDb.
 
-
-## Velg topologi og start kafka streams operasjonene
-"Topologi" er strukturen og flyten av streamingdata gjennom ulike prosesseringsoperasjoner. Den beskriver hvordan ordene aggregeres sammen
+## Velg topologi og start kafka Streams operasjonene
+"Topologi" refererer til strukturen og flyten av streamingdata gjennom ulike prosesseringsoperasjoner. Den beskriver hvordan dataene blir aggregert.
 ```kotlin
 val topology = builder.build()
 val streams = KafkaStreams(topology, streamsConfiguration)
 logger.info("start")
 streams.start()
 ```
-## Stans kafka streams på en god måte når applikasjonen stopppes
+## Stopp Kafka Streams på en trygg måte når applikasjonen avsluttes
 ```kotlin
 Runtime.getRuntime().addShutdownHook(Thread {
     streams.close()

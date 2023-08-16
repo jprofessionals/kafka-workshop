@@ -1,7 +1,7 @@
-package no.jpro.kafkaworkshop.oppgave2
+package no.jpro.kafkaworkshop.oppgave2.oppgave2a
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.jpro.kafkaworkshop.oppgave2.Common.topic
+import no.jpro.kafkaworkshop.oppgave2.oppgave2a.Common.topic
 
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.KafkaProducer

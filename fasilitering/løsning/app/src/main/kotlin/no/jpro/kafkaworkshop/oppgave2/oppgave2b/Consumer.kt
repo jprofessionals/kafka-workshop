@@ -1,9 +1,8 @@
-package no.jpro.kafkaworkshop.oppgave3
+package no.jpro.kafkaworkshop.oppgave2.oppgave2b
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.jpro.kafkaworkshop.oppgave2.Common
-import no.jpro.kafkaworkshop.oppgave2.Common.Message
-import no.jpro.kafkaworkshop.oppgave2.Common.topic
+import no.jpro.kafkaworkshop.oppgave2.oppgave2a.Common.Message
+import no.jpro.kafkaworkshop.oppgave2.oppgave2a.Common.topic
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer

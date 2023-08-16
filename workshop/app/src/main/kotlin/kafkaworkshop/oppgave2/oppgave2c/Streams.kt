@@ -1,4 +1,4 @@
-package no.jpro.kafkaworkshop.oppgave4
+package no.jpro.kafkaworkshop.oppgave2.oppgave2b
 
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.Serdes

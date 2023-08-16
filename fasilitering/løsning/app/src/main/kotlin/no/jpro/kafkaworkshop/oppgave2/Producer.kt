@@ -19,16 +19,17 @@ fun main() {
         CommonClientConfigs.SECURITY_PROTOCOL_CONFIG to "PLAINTEXT"
     )
 
-    val producer = KafkaProducer<String, String>(producerProperties)
+    KafkaProducer<String, String>(producerProperties).use { producer ->
+        val message = Message(id = "1", value = "a value")
+        val jsonMessage: String = objectMapper.writeValueAsString(message)
+        val record = ProducerRecord(topic, "key", jsonMessage)
 
-    val message = Message(id = "1", value = "a value")
-
-    val jsonMessage: String = objectMapper.writeValueAsString(message)
-    val record = ProducerRecord(topic, "key", jsonMessage)
-
-    logger.info("Sending message $jsonMessage")
-    producer.send(record)
-    logger.info("Message has been sent")
-
-    producer.close()
+        try {
+            logger.info("Sending message $jsonMessage")
+            producer.send(record)
+            logger.info("Message has been sent")
+        } catch (e: Exception) {
+            logger.error("Error sending message $jsonMessage", e)
+        }
+    }
 }

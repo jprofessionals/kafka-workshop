@@ -19,19 +19,20 @@ fun main() {
         ConsumerConfig.GROUP_ID_CONFIG to "kotlinConsumer-1"
     )
 
-    val consumer: Consumer<String, String> = KafkaConsumer(consumerProps)
-    consumer.subscribe(listOf(topic))
+    KafkaConsumer<String, String>(consumerProps).use { consumer ->
+        consumer.subscribe(listOf(topic))
 
-    while (true) {
-        val records = consumer.poll(Duration.ofMillis(100))
-        records.forEach { record ->
-            logger.info("Consumed record with key ${record.key()} and value ${record.value()}")
+        while (true) {
+            val records = consumer.poll(Duration.ofMillis(100))
+            records.forEach { record ->
+                logger.info("Consumed record with key ${record.key()} and value ${record.value()}")
 
-            try {
-                val message: Message = objectMapper.readValue(record.value(), Message::class.java)
-                logger.info("Deserialized Melding: $message")
-            } catch (e: Exception) {
-                logger.error("Error deserializing record value: ${record.value()}", e)
+                try {
+                    val message: Message = objectMapper.readValue(record.value(), Message::class.java)
+                    logger.info("Deserialized Message: $message")
+                } catch (e: Exception) {
+                    logger.error("Error deserializing record value: ${record.value()}", e)
+                }
             }
         }
     }

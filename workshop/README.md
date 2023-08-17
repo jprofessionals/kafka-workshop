@@ -15,5 +15,5 @@ Hvis du bruker en annen versjon av java, kan du endre versjon i konfigurasjonsfi
 ## Veiledning for deltakere
 - Åpne workshop-mappen i ditt foretrukne utviklingsmiljø. Vi anbefaler IntelliJ, da workshopen er designet med dette i tankene.
 - Pass på at prosjektet bygger ved hjelp av Gradle-oppsettet inkludert i prosjektet.
-- Start med å lese dette: workshop/app/src/main/kotlin/kafkaworkshop/oppgave1/README.md.
+- Start med å lese dette: app/src/main/kotlin/kafkaworkshop/oppgave1/README.md.
 - Skulle du stå fast på en oppgave, finner du løsningene i ../fasilitering/løsning-mappen.

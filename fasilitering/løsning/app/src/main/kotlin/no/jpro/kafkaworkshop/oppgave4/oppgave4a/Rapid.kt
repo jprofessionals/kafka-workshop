@@ -10,7 +10,7 @@ typealias Message = Map<String, ObjectNode>
 
 class Rapid {
     companion object {
-        val rapidtopic: String = "rapid-1"
+        val topic: String = "rapid-1"
         val objectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
     }
 
@@ -22,7 +22,6 @@ class Rapid {
         data class ParticipatingSystem(val applikasjonsnavn: String, val timestamp: ZonedDateTime)
 
         class MessageConverter {
-            private val objectMapper = jacksonObjectMapper()
 
             fun convertFromJson(json: String): RapidMessage? {
                 return try {

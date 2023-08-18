@@ -1,8 +1,6 @@
-package no.jpro.kafkaworkshop.oppgave4.oppgave4a
+package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.jpro.kafkaworkshop.oppgave2.oppgave2a.Common.topic
-
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
@@ -22,7 +20,7 @@ fun main() {
 
     KafkaProducer<String, String>(producerProperties).use { producer ->
         val jsonMessage = sampleProducerMessage().toJsonText()
-        val record = ProducerRecord(Rapid.rapidtopic, "", jsonMessage)
+        val record = ProducerRecord(Rapid.topic, "", jsonMessage)
 
         try {
             logger.info("Sending message $jsonMessage")

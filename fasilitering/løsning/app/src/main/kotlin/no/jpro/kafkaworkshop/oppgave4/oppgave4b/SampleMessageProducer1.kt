@@ -1,6 +1,8 @@
-package no.jpro.kafkaworkshop.oppgave4.oppgave4a
+package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Message
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid
 import java.time.ZonedDateTime
 
 fun sampleProducerMessage(): Rapid.RapidMessage {

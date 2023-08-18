@@ -22,19 +22,16 @@ typealias MessageData = Map<String, ObjectNode>
 
 class Rapid {
 
-
     companion object {
+        val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.Rapid")
         val topic: String = "rapid-1"
         val objectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-
         fun producerProperties() = mapOf<String, Any>(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java.name,
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java.name,
             CommonClientConfigs.SECURITY_PROTOCOL_CONFIG to "PLAINTEXT"
         )
-
-        val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.Rapid")
 
         fun consumerProperties(consumerGroupId: String) = mapOf(
             ConsumerConfig.GROUP_ID_CONFIG to consumerGroupId,
@@ -66,8 +63,7 @@ class Rapid {
             shouldProcess: (MessageData) -> Boolean,
             processRecord: (ConsumerRecord<String, String>) -> Unit,
         ) {
-            val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.consumer")
-
+            logger.info("consumeMessages")
             KafkaConsumer<String, String>(Rapid.Companion.consumerProperties(consumerGroupId = consumerGroupId)).use { consumer ->
                 consumer.subscribe(listOf(Rapid.topic))
 
@@ -75,9 +71,7 @@ class Rapid {
                     val records = consumer.poll(Duration.ofMillis(100))
                     records.forEach { record ->
                         val message: Rapid.RapidMessage? = Rapid.RapidMessage.MessageConverter().convertFromJson(record.value())
-
                         if (message != null && shouldProcess(message.messageData)) {
-                            logger.info("Consumed record with key ${record.key()} and value ${record.value()}")
                             processRecord(record)
                         }
                     }

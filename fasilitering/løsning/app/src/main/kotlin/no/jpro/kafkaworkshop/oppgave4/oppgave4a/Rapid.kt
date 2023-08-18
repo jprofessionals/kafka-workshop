@@ -3,10 +3,11 @@ package no.jpro.kafkaworkshop.oppgave4.oppgave4a
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import java.time.ZoneId
 import java.time.ZonedDateTime
 
 
-typealias Message = Map<String, ObjectNode>
+typealias MessageData = Map<String, ObjectNode>
 
 class Rapid {
     companion object {
@@ -16,10 +17,12 @@ class Rapid {
 
     data class RapidMessage(
         val eventName: String,
-        val message: Message,
+        val messageData: MessageData,
         val participatingSystems: List<ParticipatingSystem>
     ) {
-        data class ParticipatingSystem(val applikasjonsnavn: String, val timestamp: ZonedDateTime)
+        data class ParticipatingSystem private constructor(val applikasjonsnavn: String, val timestamp: ZonedDateTime) {
+            constructor(applikasjonsnavn: String) : this(applikasjonsnavn, ZonedDateTime.now(ZoneId.systemDefault()))
+        }
 
         class MessageConverter {
 
@@ -33,6 +36,15 @@ class Rapid {
         }
 
         fun toJsonText() = objectMapper.writeValueAsString(this)
+
+
+        fun copy2(participatingSystem: ParticipatingSystem, addMessageData: MessageData): RapidMessage {
+            return this.copy(
+                participatingSystems = participatingSystems + participatingSystem,
+                messageData = messageData + addMessageData
+            )
+        }
+
     }
 
 }

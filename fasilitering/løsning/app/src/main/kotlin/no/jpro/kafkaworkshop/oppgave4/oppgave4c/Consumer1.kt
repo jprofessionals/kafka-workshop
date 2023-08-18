@@ -11,60 +11,57 @@ import org.slf4j.LoggerFactory
 import java.time.Duration
 
 fun main() {
-    val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.consumer")
-
-
-
-
     val consumerId1Mapping = mapOf("10" to "A14", "11" to "B55", "12" to "H2", "13" to "X91", "14" to "V20")
 
-    KafkaConsumer<String, String>(Rapid.Companion.consumerProperties(consumerGroupId = "rapidConsumer1-1")).use { consumer ->
-        consumer.subscribe(listOf(Rapid.topic))
+    Rapid.consumeMessages(
+        consumerGroupId = "rapidConsumer1-1",
+        shouldProcess = ::shouldProcessMessage,
+        processRecord = { record ->
+            val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.consumer")
+            val message: Rapid.RapidMessage? = Rapid.RapidMessage.MessageConverter().convertFromJson(record.value())
 
-        while (true) {
-            val records = consumer.poll(Duration.ofMillis(100))
-            records.forEach { record ->
-                logger.info("Consumed record with key ${record.key()} and value ${record.value()}")
-                val message: Rapid.RapidMessage? = Rapid.RapidMessage.MessageConverter().convertFromJson(record.value())
-                if (message != null) {
-                    logger.info("Consumer 1 Deserialized Message: $message")
-                    val incomingMessage = message.messageData
+            if (message != null) {
+                logger.info("Consumer 1 Deserialized Message: $message")
+                val incomingMessage = message.messageData
 
-                    if (shouldProcessMessage(incomingMessage)) {
-                        val id = incomingMessage["key1"]
+                if (shouldProcessMessage(incomingMessage)) {
+                    val id = incomingMessage["key1"]
+                    logger.info("Consumer 1 Processing message: $message")
+                    val consumerId1Key = consumerId1Mapping.get(id?.get("producer1ItemId")?.asText())
+                    val value = incomingMessage["key2"]
+                    logger.info("Producer 1 message received: $id: id value: $value Mapping to Consumer1Id: $consumerId1Key")
+                    val messageNodeFactory = JsonNodeFactory.instance
 
-                        logger.info("Consumer 1 Processing message: $message")
-
-                        val consumerId1Key = consumerId1Mapping.get(id?.get("producer1ItemId")?.asText())
-                        val value = incomingMessage["key2"]
-
-                        logger.info("Producer 1 message received: $id: id value: $value Mapping to Consumer1Id: $consumerId1Key")
-
-                        val messageNodeFactory = JsonNodeFactory.instance
-
-                        val newMessage = message.copy(
-                            Rapid.RapidMessage.ParticipatingSystem("consumer1"), mapOf(
-                                "consumer1Id" to messageNodeFactory.objectNode().put("id", consumerId1Key)
-                            )
+                    val newMessage = message.copy(
+                        Rapid.RapidMessage.ParticipatingSystem("consumer1"), mapOf(
+                            "consumer1Id" to messageNodeFactory.objectNode().put("id", consumerId1Key)
                         )
+                    )
 
-                        logger.info("newMessage: ${newMessage.toJsonText()}")
+                    logger.info("newMessage: ${newMessage.toJsonText()}")
+                    val willNextMessageBeConsumedAgain = shouldProcessMessage(newMessage.messageData)
+                    if (willNextMessageBeConsumedAgain) {
+                        logger.error("Can not create new message, it will be consumed again and create a loop")
+                    } else {
+                        KafkaProducer<String, String>(Rapid.producerProperties()).use { producer ->
+                            val jsonMessage = newMessage.toJsonText()
+                            val record = ProducerRecord(Rapid.topic, "", jsonMessage)
 
-                        val willNextMessageBeConsumedAgain = shouldProcessMessage(newMessage.messageData)
-                        if(willNextMessageBeConsumedAgain) {
-                            logger.error("Can not create new message, it will be consumed again and create a loop")
-                        } else {
-                            Rapid.send(newMessage.toJsonText())
+                            try {
+                                logger.info("Sending message $jsonMessage")
+                                producer.send(record)
+                                logger.info("Message has been sent")
+                            } catch (e: Exception) {
+                                logger.error("Error sending message $jsonMessage", e)
+                            }
                         }
                     }
-                } else {
-                    logger.error("Error deserializing record value: ${record.value()}")
                 }
+            } else {
+                logger.error("Error deserializing record value: ${record.value()}")
             }
         }
-    }
-
-
+    )
 }
 
 fun shouldProcessMessage(incomingMessage: MessageData): Boolean {

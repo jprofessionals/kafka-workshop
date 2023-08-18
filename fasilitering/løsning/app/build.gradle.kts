@@ -13,10 +13,11 @@ repositories {
 dependencies {
     implementation("org.apache.kafka:kafka-streams:3.4.0")
     implementation("org.apache.kafka:kafka-clients:3.4.0")
-    implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("ch.qos.logback:logback-core:1.2.3")
+    implementation("ch.qos.logback:logback-classic:1.2.9")
+    implementation("ch.qos.logback:logback-core:1.2.9")
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     implementation(kotlin("stdlib"))
 
 }

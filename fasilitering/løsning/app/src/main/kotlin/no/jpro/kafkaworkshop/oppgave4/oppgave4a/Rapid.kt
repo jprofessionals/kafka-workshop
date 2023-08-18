@@ -26,6 +26,7 @@ class Rapid {
         val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.Rapid")
         val topic: String = "rapid-1"
         val objectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
+
         fun producerProperties() = mapOf<String, Any>(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java.name,
@@ -63,14 +64,13 @@ class Rapid {
             shouldProcess: (MessageData) -> Boolean,
             processRecord: (ConsumerRecord<String, String>) -> Unit,
         ) {
-            logger.info("consumeMessages")
-            KafkaConsumer<String, String>(Rapid.Companion.consumerProperties(consumerGroupId = consumerGroupId)).use { consumer ->
-                consumer.subscribe(listOf(Rapid.topic))
+            KafkaConsumer<String, String>(consumerProperties(consumerGroupId = consumerGroupId)).use { consumer ->
+                consumer.subscribe(listOf(topic))
 
                 while (true) {
                     val records = consumer.poll(Duration.ofMillis(100))
                     records.forEach { record ->
-                        val message: Rapid.RapidMessage? = Rapid.RapidMessage.MessageConverter().convertFromJson(record.value())
+                        val message: RapidMessage? = RapidMessage.MessageConverter().convertFromJson(record.value())
                         if (message != null && shouldProcess(message.messageData)) {
                             processRecord(record)
                         }
@@ -95,7 +95,8 @@ class Rapid {
                 return try {
                     objectMapper.readValue(json, RapidMessage::class.java)
                 } catch (e: Exception) {
-                    null
+                    logger.error("Error reading message: $json")
+                    throw e
                 }
             }
         }

@@ -1,10 +1,10 @@
-
 import no.jpro.kafkaworkshop.oppgave2.oppgave2d.Message
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.LoggerFactory
 import java.time.Duration
+
 fun main() {
     val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.consumer")
     val topic = "kotlin_topic"
@@ -19,7 +19,7 @@ fun main() {
     )
 
     KafkaConsumer<String, String>(consumerProps).use { consumer ->
-        consumer.subscribe(listOf(topic ))
+        consumer.subscribe(listOf(topic))
 
         while (true) {
             val records = consumer.poll(Duration.ofMillis(100))

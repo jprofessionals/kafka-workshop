@@ -16,6 +16,7 @@ object Common {
 
     data class Message(val id: String, val value: String)
 }
+
 fun main() {
     val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.producer")
 

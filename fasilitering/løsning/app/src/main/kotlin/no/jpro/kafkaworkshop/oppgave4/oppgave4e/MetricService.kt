@@ -20,14 +20,18 @@ class MetricService {
     private val log = logger()
 
     fun start() {
+        val APPLICATION_ID = "metricService-1"
+        val BOOTSTRAP_SERVERS = "localhost:9092"
+        val STATE_DIR = "ktables"
+
         val streamsConfiguration = Properties()
-        streamsConfiguration[StreamsConfig.APPLICATION_ID_CONFIG] = "metricService-1"
-        streamsConfiguration[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092"
+        streamsConfiguration[StreamsConfig.APPLICATION_ID_CONFIG] = APPLICATION_ID
+        streamsConfiguration[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = BOOTSTRAP_SERVERS
         streamsConfiguration[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
         streamsConfiguration[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
         streamsConfiguration[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
         streamsConfiguration[StreamsConfig.COMMIT_INTERVAL_MS_CONFIG] = "100"
-        streamsConfiguration[StreamsConfig.STATE_DIR_CONFIG] = "ktables"
+        streamsConfiguration[StreamsConfig.STATE_DIR_CONFIG] = STATE_DIR
         streamsConfiguration[ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG] = "6000"
         streamsConfiguration[ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG] = "6000"
         streamsConfiguration[ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG] = "1000"

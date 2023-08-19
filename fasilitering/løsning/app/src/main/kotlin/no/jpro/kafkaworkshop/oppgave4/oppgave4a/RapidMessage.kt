@@ -10,8 +10,8 @@ data class RapidMessage(
     val participatingSystems: List<ParticipatingSystem>
 ) {
     data class ParticipatingSystem(
-        val applicationName: String, // renamed for clarity
-        val timestamp: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())
+        val applicationName: String,
+        val eventTime: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Europe/Oslo"))
     )
 
     companion object {

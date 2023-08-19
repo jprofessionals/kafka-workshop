@@ -2,7 +2,6 @@ import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.isNotNull
-import org.slf4j.LoggerFactory
 
 fun main() {
     IdMapping().listen("IdMapping-listener-1")

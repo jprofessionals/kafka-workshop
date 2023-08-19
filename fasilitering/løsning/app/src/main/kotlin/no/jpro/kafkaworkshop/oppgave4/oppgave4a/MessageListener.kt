@@ -53,10 +53,12 @@ abstract class MessageListener {
         message?.let {
             if (shouldProcessMessage(it.messageData)) {
                 val newMessage = processMessage(it)
-                if (newMessage != null && !shouldProcessMessage(newMessage.messageData)) {
-                    MessageProducer.send(newMessage)
-                } else {
-                    logger().error("Cannot create new message; it will be consumed again and create a loop")
+                if (newMessage != null) {
+                    if (!shouldProcessMessage(newMessage.messageData)) {
+                        MessageProducer.send(newMessage)
+                    } else {
+                        logger().error("Cannot create new message; it will be consumed again and create a loop")
+                    }
                 }
             }
         } ?: logger().error("Error deserializing record value: ${record.value()}")

@@ -2,7 +2,6 @@ package no.jpro.kafkaworkshop.oppgave4.oppgave4a
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.fasterxml.jackson.databind.node.TextNode
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.apache.kafka.clients.CommonClientConfigs
@@ -105,10 +104,8 @@ class Rapid {
 
         fun toJsonText() = objectMapper.writeValueAsString(this)
 
-        fun copyWithAdditionalData(
-            participatingSystem: ParticipatingSystem,
-            addMessageData: MessageData
-        ): RapidMessage {
+        fun copyWithAdditionalData(callerClass: String, addMessageData: MessageData): RapidMessage {
+            val participatingSystem = ParticipatingSystem(callerClass)
             return this.copy(
                 participatingSystems = participatingSystems + participatingSystem,
                 messageData = messageData + addMessageData

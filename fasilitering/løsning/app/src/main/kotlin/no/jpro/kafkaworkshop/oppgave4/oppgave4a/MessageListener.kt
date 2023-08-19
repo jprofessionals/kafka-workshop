@@ -1,18 +1,15 @@
+import no.jpro.kafkaworkshop.logger
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.slf4j.LoggerFactory
 import java.time.Duration
 
 abstract class MessageListener {
-
-    private val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.MessageListener")
-
 
     protected abstract fun shouldProcessMessage(incomingMessage: MessageData): Boolean
 
@@ -28,29 +25,21 @@ abstract class MessageListener {
     )
 
     fun listen(consumerGroupId: String) {
-        consumeMessages(
-            consumerGroupId = consumerGroupId,
-            shouldProcess = ::shouldProcessMessage,
-            processRecord = { record ->
-                consumeAndProcessRecord(record)
-            }
-        )
+        consumeMessages(consumerGroupId, ::shouldProcessMessage, ::consumeRecord)
     }
 
-
-    fun consumeMessages(
+    private fun consumeMessages(
         consumerGroupId: String,
         shouldProcess: (MessageData) -> Boolean,
         processRecord: (ConsumerRecord<String, String>) -> Unit
     ) {
-        logger.info("consumeMessages")
+        logger().info("consumeMessages")
         KafkaConsumer<String, String>(consumerProperties(consumerGroupId)).use { consumer ->
-            consumer.subscribe(listOf(Rapid.topic))
-
+            consumer.subscribe(listOf(RapidConfiguration.topic))
             while (true) {
                 val records = consumer.poll(Duration.ofMillis(100))
                 records.forEach { record ->
-                    val message: RapidMessage? = Rapid.messageConverter.convertFromJson(record.value())
+                    val message = RapidMessage.convertFromJson(record.value())
                     if (message != null && shouldProcess(message.messageData)) {
                         processRecord(record)
                     }
@@ -59,32 +48,19 @@ abstract class MessageListener {
         }
     }
 
-    fun consumeAndProcessRecord(record: ConsumerRecord<String, String>) {
-        val message = RapidMessage.MessageConverter().convertFromJson(record.value())
+    private fun consumeRecord(record: ConsumerRecord<String, String>) {
+        val message = RapidMessage.convertFromJson(record.value())
         message?.let {
-            val incomingMessage = it.messageData
-
-            if (shouldProcessMessage(incomingMessage)) {
-                processIncomingMessage(record, incomingMessage, message)
-                val newMessage = createNewMessage(incomingMessage, message)
+            if (shouldProcessMessage(it.messageData)) {
+                val newMessage = processMessage(it)
                 if (newMessage != null && !shouldProcessMessage(newMessage.messageData)) {
                     MessageProducer.send(newMessage)
                 } else {
-                    logger.error("Can not create new message, it will be consumed again and create a loop")
+                    logger().error("Cannot create new message; it will be consumed again and create a loop")
                 }
             }
-        } ?: logger.error("Error deserializing record value: ${record.value()}")
+        } ?: logger().error("Error deserializing record value: ${record.value()}")
     }
 
-    protected abstract fun processIncomingMessage(
-        record: ConsumerRecord<String, String>,
-        incomingMessage: MessageData,
-        message: RapidMessage
-    )
-
-    protected abstract fun createNewMessage(
-        incomingMessage: MessageData,
-        originalMessage: RapidMessage
-    ): RapidMessage?
+    protected abstract fun processMessage(originalMessage: RapidMessage): RapidMessage?
 }
-

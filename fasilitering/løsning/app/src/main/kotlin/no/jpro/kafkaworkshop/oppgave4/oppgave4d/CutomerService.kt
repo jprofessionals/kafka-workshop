@@ -1,43 +1,29 @@
+import com.fasterxml.jackson.databind.JsonNode
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid.Companion.messageNodeFactory
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
-import org.apache.kafka.clients.consumer.ConsumerRecord
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.isNotNull
 import org.slf4j.LoggerFactory
 
 fun main() {
     CustomerService().listen("CustomerService-listener-1")
 }
 
+
 class CustomerService : MessageListener() {
-    private val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.CustomerService")
-
-    override fun processIncomingMessage(
-        record: ConsumerRecord<String, String>,
-        incomingMessage: MessageData,
-        message: RapidMessage
-    ) {
-        logger.info("Processing message")
-        val productInternalId = incomingMessage["productInternalId"]?.asText()
-        val product = incomingMessage["product"]
-        logger.info("message received with productInternalId: $productInternalId value: $product")
-    }
-
-    override fun createNewMessage(
-        incomingMessage: MessageData,
-        originalMessage: RapidMessage
-    ): RapidMessage? {
-        return originalMessage.copyWithAdditionalData(
-            this::class.simpleName!!,
-            mapOf("processed" to messageNodeFactory.booleanNode(true))
-        )
+    private val logger = LoggerFactory.getLogger(CustomerService::class.java)
+    override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        val additionalData = mapOf("processed" to messageNodeFactory.booleanNode(true))
+        return originalMessage.copyWithAdditionalData(this::class.simpleName!!, additionalData)
     }
 
     override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
-        val product = incomingMessage["product"]
-        val hasProduct = product != null && !product.isNull
-        val productInternalId = incomingMessage["productInternalId"]
-        val hasProductInternalId = productInternalId != null && !productInternalId.isNull
-        val isProcessed = incomingMessage["processed"]?.takeIf { !it.isNull }?.booleanValue() == true
-        return hasProductInternalId && hasProduct && !isProcessed
+        val productExists = incomingMessage["product"]?.isNotNull() ?: false
+        val internalIdExists = incomingMessage["productInternalId"]?.isNotNull() ?: false
+        val alreadyProcessed = incomingMessage["processed"]?.booleanValue() == true
+
+        return productExists && internalIdExists && !alreadyProcessed
     }
 }
+
+

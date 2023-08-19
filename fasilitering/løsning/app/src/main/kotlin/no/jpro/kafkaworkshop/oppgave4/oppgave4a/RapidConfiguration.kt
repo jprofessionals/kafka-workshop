@@ -7,14 +7,18 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 typealias MessageData = Map<String, JsonNode>
 
-class Rapid {
+class RapidConfiguration {
 
     companion object {
         const val topic: String = "rapid-1"
         val objectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-        val messageConverter = RapidMessage.MessageConverter()
         val messageNodeFactory = JsonNodeFactory.instance
-
-
     }
+}
+
+/**
+ * Extension function to check if a JSON node is not null.
+ */
+fun JsonNode?.isNotNull(): Boolean {
+    return this?.let { !it.isNull } ?: false
 }

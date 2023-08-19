@@ -1,8 +1,7 @@
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid.Companion.messageNodeFactory
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
-import org.apache.kafka.clients.consumer.ConsumerRecord
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.isNotNull
 import org.slf4j.LoggerFactory
 
 fun main() {
@@ -10,39 +9,29 @@ fun main() {
 }
 
 class IdMapping : MessageListener() {
-    private val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.IdMapping")
 
-    override fun processIncomingMessage(
-        record: ConsumerRecord<String, String>,
-        incomingMessage: MessageData,
-        message: RapidMessage
-    ) {
-        val productExternalId = incomingMessage["productExternalId"]?.asText()
-        val productInternalId = toProductInternalId(productExternalId)
-        val value = incomingMessage["product"]
-        logger.info("message received with productExternalId: $productExternalId value: $value Mapping to Consumer1Id: $productInternalId")
-    }
-
-    override fun createNewMessage(
-        incomingMessage: MessageData,
-        originalMessage: RapidMessage
-    ): RapidMessage? {
-        val productInternalId = toProductInternalId(incomingMessage["productExternalId"]?.asText())
-        return originalMessage.copyWithAdditionalData(
-            this::class.simpleName!!,
-            mapOf("productInternalId" to messageNodeFactory.textNode(productInternalId))
-        )
+    companion object {
+        private val ID_MAP = mapOf("10" to "A14", "11" to "B55", "12" to "H2", "13" to "X91", "14" to "V20")
     }
 
     override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
-        val productExternalId = incomingMessage["productExternalId"]
-        val harProductExternalId = productExternalId != null && !productExternalId.isNull
-        val productInternalId = incomingMessage["productInternalId"]
-        val harProductInternalId = productInternalId != null && !productInternalId.isNull
-        return harProductExternalId && !harProductInternalId
+        val hasExternalId = incomingMessage["productExternalId"]?.isTextual ?: false
+        val lacksInternalId = !incomingMessage["productInternalId"].isNotNull()
+
+        return hasExternalId && lacksInternalId
     }
 
-    private fun toProductInternalId(productExternalId: String?): String? {
-        return mapOf("10" to "A14", "11" to "B55", "12" to "H2", "13" to "X91", "14" to "V20")[productExternalId]
+    override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        val externalId = originalMessage.messageData["productExternalId"]?.asText()
+        val internalId = mapExternalIdToInternal(externalId)
+
+        return originalMessage.copyWithAdditionalData(
+            this::class.simpleName!!,
+            mapOf("productInternalId" to messageNodeFactory.textNode(internalId))
+        )
+    }
+
+    private fun mapExternalIdToInternal(externalId: String?): String? {
+        return ID_MAP[externalId]
     }
 }

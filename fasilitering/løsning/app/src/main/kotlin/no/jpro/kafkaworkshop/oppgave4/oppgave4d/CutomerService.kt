@@ -11,7 +11,6 @@ fun main() {
 
 
 class CustomerService : MessageListener() {
-    private val logger = LoggerFactory.getLogger(CustomerService::class.java)
     override fun processMessage(originalMessage: RapidMessage): RapidMessage {
         val additionalData = mapOf("processed" to messageNodeFactory.booleanNode(true))
         return originalMessage.copyWithAdditionalData(this::class.simpleName!!, additionalData)

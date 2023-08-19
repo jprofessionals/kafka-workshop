@@ -8,12 +8,12 @@ import java.time.ZonedDateTime
  * Represents a message used in the Rapid communication protocol.
  *
  * @property eventName The name of the event this message relates to.
- * @property messageData The actual data of the message represented as a map.
+ * @property payload The actual data of the message represented as a map.
  * @property participatingSystems A list of systems that have interacted with or processed this message.
  */
 data class RapidMessage(
     val eventName: String,
-    val messageData: MessageData,
+    val payload: Payload,
     val participatingSystems: List<ParticipatingSystem>
 ) {
     /**
@@ -48,14 +48,14 @@ data class RapidMessage(
          *
          * @param callerClass The class or system creating this message.
          * @param eventName The name of the event.
-         * @param additionalMessageData Additional message data.
+         * @param additionalPayload Additional message data.
          * @return A new RapidMessage object.
          */
-        fun fromData(callerClass: String, eventName: String, additionalMessageData: MessageData): RapidMessage {
+        fun fromData(callerClass: String, eventName: String, additionalPayload: Payload): RapidMessage {
             val participatingSystem = ParticipatingSystem(callerClass)
             return RapidMessage(
                 eventName = eventName,
-                messageData = additionalMessageData,
+                payload = additionalPayload,
                 participatingSystems = listOf(participatingSystem)
             )
         }
@@ -82,14 +82,14 @@ data class RapidMessage(
      * and needs to append its information and some additional data to the message.
      *
      * @param callerClass The class or system interacting with the message.
-     * @param additionalMessageData Additional message data.
+     * @param additionalPayload Additional message data.
      * @return A new RapidMessage object.
      */
-    fun copyWithAdditionalData(callerClass: String, additionalMessageData: MessageData): RapidMessage {
+    fun copyWithAdditionalData(callerClass: String, additionalPayload: Payload): RapidMessage {
         val newParticipatingSystem = ParticipatingSystem(callerClass)
         return this.copy(
             participatingSystems = participatingSystems + newParticipatingSystem,
-            messageData = messageData + additionalMessageData
+            payload = payload + additionalPayload
         )
     }
 }

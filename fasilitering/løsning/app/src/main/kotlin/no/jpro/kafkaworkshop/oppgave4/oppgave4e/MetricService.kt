@@ -28,18 +28,18 @@ class MetricService {
      * Starts the Kafka stream processing to capture and log metric data.
      */
     fun start() {
-        val APPLICATION_ID = "metricService-1"
-        val BOOTSTRAP_SERVERS = "localhost:9092"
-        val STATE_DIR = "ktables"
+        val applicationId = "metricService-1"
+        val bootstrapServers = "localhost:9092"
+        val stateDir = "ktables"
 
         val streamsConfiguration = Properties().apply {
-            this[StreamsConfig.APPLICATION_ID_CONFIG] = APPLICATION_ID
-            this[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = BOOTSTRAP_SERVERS
+            this[StreamsConfig.APPLICATION_ID_CONFIG] = applicationId
+            this[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
             this[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
             this[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
             this[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
             this[StreamsConfig.COMMIT_INTERVAL_MS_CONFIG] = "100"
-            this[StreamsConfig.STATE_DIR_CONFIG] = STATE_DIR
+            this[StreamsConfig.STATE_DIR_CONFIG] = stateDir
             this[ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG] = "6000"
             this[ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG] = "6000"
             this[ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG] = "1000"

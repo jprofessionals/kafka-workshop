@@ -1,9 +1,7 @@
-import com.fasterxml.jackson.databind.JsonNode
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.isNotNull
-import org.slf4j.LoggerFactory
 
 fun main() {
     CustomerService().listen("CustomerService-listener-1")
@@ -34,7 +32,7 @@ class CustomerService : MessageListener() {
      * @return `true` if the message has a product, has an internal product ID,
      *         and hasn't been processed before. Returns `false` otherwise.
      */
-    override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
+    override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
         val productExists = incomingMessage["product"]?.isNotNull() ?: false
         val internalIdExists = incomingMessage["productInternalId"]?.isNotNull() ?: false
         val alreadyProcessed = incomingMessage["processed"]?.booleanValue() == true

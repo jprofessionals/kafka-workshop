@@ -1,5 +1,5 @@
 import no.jpro.kafkaworkshop.logger
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
@@ -23,7 +23,7 @@ abstract class MessageListener {
      * @param incomingMessage The message data to check.
      * @return `true` if the message should be processed, `false` otherwise.
      */
-    protected abstract fun shouldProcessMessage(incomingMessage: MessageData): Boolean
+    protected abstract fun shouldProcessMessage(incomingMessage: Payload): Boolean
 
     /**
      * Sets the properties for Kafka consumer.
@@ -61,7 +61,7 @@ abstract class MessageListener {
      */
     private fun consumeMessages(
         consumerGroupId: String,
-        shouldProcess: (MessageData) -> Boolean,
+        shouldProcess: (Payload) -> Boolean,
         processRecord: (ConsumerRecord<String, String>) -> Unit
     ) {
         logger().info("consumeMessages")
@@ -71,7 +71,7 @@ abstract class MessageListener {
                 val records = consumer.poll(Duration.ofMillis(100))
                 records.forEach { record ->
                     val message = RapidMessage.convertFromJson(record.value())
-                    if (message != null && shouldProcess(message.messageData)) {
+                    if (message != null && shouldProcess(message.payload)) {
                         processRecord(record)
                     }
                 }
@@ -88,10 +88,10 @@ abstract class MessageListener {
     private fun consumeRecord(record: ConsumerRecord<String, String>) {
         val message = RapidMessage.convertFromJson(record.value())
         message?.let {
-            if (shouldProcessMessage(it.messageData)) {
+            if (shouldProcessMessage(it.payload)) {
                 val newMessage = processMessage(it)
                 if (newMessage != null) {
-                    if (!shouldProcessMessage(newMessage.messageData)) {
+                    if (!shouldProcessMessage(newMessage.payload)) {
                         MessageProducer.send(newMessage)
                     } else {
                         logger().error("Cannot create new message; it will be consumed again and create a loop")

@@ -1,6 +1,6 @@
 package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.objectMapper
@@ -42,12 +42,12 @@ class NewProductsMessageProducer {
         val applicationName = this::class.simpleName.toString()
 
         val product = Product("car", "red")
-        val messageData: MessageData = mapOf(
+        val payload: Payload = mapOf(
             "productExternalId" to messageNodeFactory.textNode("12"),
             "product" to objectMapper.valueToTree(product)
         )
 
-        return RapidMessage.fromData(applicationName, "SampleEvent", messageData)
+        return RapidMessage.fromData(applicationName, "SampleEvent", payload)
     }
 
     /**

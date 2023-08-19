@@ -1,18 +1,16 @@
 package no.jpro.kafkaworkshop.oppgave4.oppgave4a
 
-import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import java.text.SimpleDateFormat
 import java.util.TimeZone
 
 /**
  * A type alias for a map where keys are strings and values are `JsonNode` objects.
  */
-typealias MessageData = Map<String, JsonNode>
+typealias Payload = Map<String, JsonNode>
 
 /**
  * A configuration class for handling Rapid message processing.

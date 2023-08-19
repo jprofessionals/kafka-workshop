@@ -2,7 +2,7 @@ package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
 import MessageListener
 import no.jpro.kafkaworkshop.logger
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 
 fun main() {
@@ -37,7 +37,7 @@ class MessageLoggerService : MessageListener() {
      * @param incomingMessage The incoming message to check.
      * @return Always true.
      */
-    override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
+    override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
         return true
     }
 }

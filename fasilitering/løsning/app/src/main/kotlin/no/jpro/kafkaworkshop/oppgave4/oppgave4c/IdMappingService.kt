@@ -1,4 +1,4 @@
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.isNotNull
@@ -29,7 +29,7 @@ class IdMapping : MessageListener() {
      * @param incomingMessage The incoming message data.
      * @return `true` if the message has an external product ID and lacks an internal one, `false` otherwise.
      */
-    override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
+    override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
         val hasExternalId = incomingMessage["productExternalId"]?.isTextual ?: false
         val lacksInternalId = !incomingMessage["productInternalId"].isNotNull()
 
@@ -43,7 +43,7 @@ class IdMapping : MessageListener() {
      * @return The processed message with additional data if an internal product ID is added.
      */
     override fun processMessage(originalMessage: RapidMessage): RapidMessage {
-        val externalId = originalMessage.messageData["productExternalId"]?.asText()
+        val externalId = originalMessage.payload["productExternalId"]?.asText()
         val internalId = mapExternalIdToInternal(externalId)
 
         return originalMessage.copyWithAdditionalData(

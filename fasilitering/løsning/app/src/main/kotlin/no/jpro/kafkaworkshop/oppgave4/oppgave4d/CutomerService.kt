@@ -19,7 +19,7 @@ class CustomerService : MessageListener() {
         message?.let {
             val incomingMessage = it.messageData
 
-            if (messageWillBeProcessed(incomingMessage)) {
+            if (shouldProcessMessage(incomingMessage)) {
                 logger.info("Processing message")
                 val productInternalId = incomingMessage["productInternalId"]?.asText()
                 val product = incomingMessage["product"]
@@ -31,10 +31,7 @@ class CustomerService : MessageListener() {
                     )
                 )
 
-                val nextWillBeProcessedAgain = messageWillBeProcessed(newMessage.messageData)
-                logger.info("nextWillBeProcessedAgain: $nextWillBeProcessedAgain")
-
-                if (!nextWillBeProcessedAgain) {
+                if (!shouldProcessMessage(newMessage.messageData)) {
                     logger.info("Sending newMessage: ${newMessage.toJsonText()}")
                     MessageProducer.send(newMessage)
                 } else {
@@ -44,15 +41,14 @@ class CustomerService : MessageListener() {
         } ?: logger.error("Error deserializing record value: ${record.value()}")
     }
 
-    override fun messageWillBeProcessed(incomingMessage: MessageData): Boolean {
+    override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
         val product = incomingMessage["product"]
         val hasProduct = product != null && !product.isNull
         val productInternalId = incomingMessage["productInternalId"]
         val hasProductInternalId = productInternalId != null && !productInternalId.isNull
         val isProcessed = incomingMessage["processed"]?.takeIf { !it.isNull }?.booleanValue() == true
-        val willBeProcessed = hasProductInternalId && hasProduct && !isProcessed
 
-        return willBeProcessed
+        return hasProductInternalId && hasProduct && !isProcessed
     }
 }
 

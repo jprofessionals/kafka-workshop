@@ -13,7 +13,7 @@ abstract class MessageListener {
     private val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.MessageListener")
 
 
-    protected abstract fun messageWillBeProcessed(incomingMessage: MessageData): Boolean
+    protected abstract fun shouldProcessMessage(incomingMessage: MessageData): Boolean
 
     private fun consumerProperties(consumerGroupId: String) = mapOf(
         ConsumerConfig.GROUP_ID_CONFIG to consumerGroupId,
@@ -27,22 +27,13 @@ abstract class MessageListener {
     )
 
     fun listen(consumerGroupId: String) {
-
-        consumeMessages(consumerGroupId = consumerGroupId,
-            shouldProcess = ::messageWillBeProcessed,
-            processRecord = { record ->
-                val message = Rapid.messageConverter.convertFromJson(record.value())
-                message?.let {
-                    val incomingMessage = it.messageData
-
-                    if (messageWillBeProcessed(incomingMessage)) {
-                        processIncomingMessage(record)
-                    }
-                } ?: logger.error("Error deserializing record value: ${record.value()}")
-            })
-
-
+        consumeMessages(
+            consumerGroupId = consumerGroupId,
+            shouldProcess = ::shouldProcessMessage,
+            processRecord = ::processIncomingMessage
+        )
     }
+
 
     fun consumeMessages(
         consumerGroupId: String,

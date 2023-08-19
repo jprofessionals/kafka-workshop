@@ -19,7 +19,7 @@ class IdMapping : MessageListener() {
         message?.let {
             val incomingMessage = it.messageData
 
-            if (messageWillBeProcessed(incomingMessage)) {
+            if (shouldProcessMessage(incomingMessage)) {
                 val productExternalId = incomingMessage["productExternalId"]?.asText()
                 val productInternalId = tilProductInternalId(productExternalId)
                 val value = incomingMessage["product"]
@@ -32,7 +32,7 @@ class IdMapping : MessageListener() {
                     )
                 )
 
-                if (!messageWillBeProcessed(newMessage.messageData)) {
+                if (!shouldProcessMessage(newMessage.messageData)) {
                     MessageProducer.send(newMessage)
                 } else {
                     logger.error("Can not create new message, it will be consumed again and create a loop")
@@ -41,7 +41,7 @@ class IdMapping : MessageListener() {
         } ?: logger.error("Error deserializing record value: ${record.value()}")
     }
 
-    override fun messageWillBeProcessed(incomingMessage: MessageData): Boolean {
+    override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
         val productExternalId = incomingMessage["productExternalId"]
         val harProductExternalId = productExternalId != null && !productExternalId.isNull
         val productInternalId = incomingMessage["productInternalId"]

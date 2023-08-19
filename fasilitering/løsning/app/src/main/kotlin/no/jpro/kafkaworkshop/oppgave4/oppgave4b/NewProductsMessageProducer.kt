@@ -1,21 +1,23 @@
 package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid.Companion.objectMapper
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
+import org.slf4j.LoggerFactory
 
 fun main() {
-    val newProductsMessageProducer = NewProductsMessageProducer()
-    newProductsMessageProducer.produceMessage()
+    NewProductsMessageProducer().produceMessage()
 }
 
 class NewProductsMessageProducer {
+    private val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.NewProductsMessageProducer")
     fun produceMessage() {
-        Rapid.send(sampleProductMessage(this::class.simpleName.toString()).toJsonText())
+        MessageProducer.send(sampleProductMessage(this::class.simpleName.toString()))
     }
 
-    fun sampleProductMessage(applicationName: String): Rapid.RapidMessage {
+    fun sampleProductMessage(applicationName: String): RapidMessage {
 
         data class Product(val name: String, val color: String)
 
@@ -24,10 +26,10 @@ class NewProductsMessageProducer {
             "product" to objectMapper.valueToTree(Product("car", "red"))
         )
 
-        return Rapid.RapidMessage(
+        return RapidMessage(
             eventName = "SampleEvent",
             messageData = messageData,
-            participatingSystems = listOf(Rapid.RapidMessage.ParticipatingSystem(applicationName))
+            participatingSystems = listOf(RapidMessage.ParticipatingSystem(applicationName))
         )
     }
 }

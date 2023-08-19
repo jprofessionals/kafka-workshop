@@ -1,51 +1,47 @@
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid.Companion.messageNodeFactory
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
+import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
 
 fun main() {
-    val idMapping = IdMapping()
-    idMapping.listen()
+    IdMapping().listen("IdMapping-listener-1")
 }
 
-class IdMapping {
-    fun listen() {
-        val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.IdMapping")
+class IdMapping : MessageListener() {
+    private val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.IdMapping")
 
-        Rapid.consumeMessages(
-            consumerGroupId = "rapidConsumer1-1",
-            shouldProcess = ::shouldProcessMessage,
-            processRecord = { record ->
-                val message = Rapid.RapidMessage.MessageConverter().convertFromJson(record.value())
-                message?.let {
-                    val incomingMessage = it.messageData
+    override fun processIncomingMessage(
+        record: ConsumerRecord<String, String>,
+    ) {
+        val message = RapidMessage.MessageConverter().convertFromJson(record.value())
+        message?.let {
+            val incomingMessage = it.messageData
 
-                    if (shouldProcessMessage(incomingMessage)) {
-                        val productExternalId = incomingMessage["productExternalId"]?.asText()
-                        val productInternalId = tilProductInternalId(productExternalId)
-                        val value = incomingMessage["product"]
-                        logger.info("message received with productExternalId: $productExternalId value: $value Mapping to Consumer1Id: $productInternalId")
+            if (messageWillBeProcessed(incomingMessage)) {
+                val productExternalId = incomingMessage["productExternalId"]?.asText()
+                val productInternalId = tilProductInternalId(productExternalId)
+                val value = incomingMessage["product"]
+                logger.info("message received with productExternalId: $productExternalId value: $value Mapping to Consumer1Id: $productInternalId")
 
-                        val newMessage = message.copyWithAdditionalData(
-                            this::class.simpleName!!,
-                            mapOf(
-                                "productInternalId" to messageNodeFactory.textNode(productInternalId)
-                            )
-                        )
+                val newMessage = message.copyWithAdditionalData(
+                    this::class.simpleName!!,
+                    mapOf(
+                        "productInternalId" to messageNodeFactory.textNode(productInternalId)
+                    )
+                )
 
-                        if (!shouldProcessMessage(newMessage.messageData)) {
-                            logger.info("Sending newMessage: ${newMessage.toJsonText()}")
-                            Rapid.send(newMessage.toJsonText())
-                        } else {
-                            logger.error("Can not create new message, it will be consumed again and create a loop")
-                        }
-                    }
-                } ?: logger.error("Error deserializing record value: ${record.value()}")
+                if (!messageWillBeProcessed(newMessage.messageData)) {
+                    MessageProducer.send(newMessage)
+                } else {
+                    logger.error("Can not create new message, it will be consumed again and create a loop")
+                }
             }
-        )
+        } ?: logger.error("Error deserializing record value: ${record.value()}")
     }
 
-    fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
+    override fun messageWillBeProcessed(incomingMessage: MessageData): Boolean {
         val productExternalId = incomingMessage["productExternalId"]
         val harProductExternalId = productExternalId != null && !productExternalId.isNull
         val productInternalId = incomingMessage["productInternalId"]

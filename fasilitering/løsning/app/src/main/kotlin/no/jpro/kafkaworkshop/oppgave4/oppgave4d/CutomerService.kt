@@ -1,5 +1,4 @@
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -10,35 +9,27 @@ fun main() {
 }
 
 class CustomerService : MessageListener() {
-    val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.IdMapping")
+    private val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.CustomerService")
 
     override fun processIncomingMessage(
-        record: ConsumerRecord<String, String>
+        record: ConsumerRecord<String, String>,
+        incomingMessage: MessageData,
+        message: RapidMessage
     ) {
-        val message = RapidMessage.MessageConverter().convertFromJson(record.value())
-        message?.let {
-            val incomingMessage = it.messageData
+        logger.info("Processing message")
+        val productInternalId = incomingMessage["productInternalId"]?.asText()
+        val product = incomingMessage["product"]
+        logger.info("message received with productInternalId: $productInternalId value: $product")
+    }
 
-            if (shouldProcessMessage(incomingMessage)) {
-                logger.info("Processing message")
-                val productInternalId = incomingMessage["productInternalId"]?.asText()
-                val product = incomingMessage["product"]
-                logger.info("message received with productExternalId: $productInternalId: $productInternalId value: $product")
-
-                val newMessage = message.copyWithAdditionalData(
-                    this::class.simpleName!!, mapOf(
-                        "processed" to messageNodeFactory.booleanNode(true)
-                    )
-                )
-
-                if (!shouldProcessMessage(newMessage.messageData)) {
-                    logger.info("Sending newMessage: ${newMessage.toJsonText()}")
-                    MessageProducer.send(newMessage)
-                } else {
-                    logger.error("Can not create new message, it will be consumed again and create a loop")
-                }
-            }
-        } ?: logger.error("Error deserializing record value: ${record.value()}")
+    override fun createNewMessage(
+        incomingMessage: MessageData,
+        originalMessage: RapidMessage
+    ): RapidMessage? {
+        return originalMessage.copyWithAdditionalData(
+            this::class.simpleName!!,
+            mapOf("processed" to messageNodeFactory.booleanNode(true))
+        )
     }
 
     override fun shouldProcessMessage(incomingMessage: MessageData): Boolean {
@@ -47,9 +38,6 @@ class CustomerService : MessageListener() {
         val productInternalId = incomingMessage["productInternalId"]
         val hasProductInternalId = productInternalId != null && !productInternalId.isNull
         val isProcessed = incomingMessage["processed"]?.takeIf { !it.isNull }?.booleanValue() == true
-
         return hasProductInternalId && hasProduct && !isProcessed
     }
 }
-
-

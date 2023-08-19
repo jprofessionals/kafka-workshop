@@ -1,4 +1,5 @@
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageData
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Rapid
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -30,7 +31,9 @@ abstract class MessageListener {
         consumeMessages(
             consumerGroupId = consumerGroupId,
             shouldProcess = ::shouldProcessMessage,
-            processRecord = ::processIncomingMessage
+            processRecord = { record ->
+                consumeAndProcessRecord(record)
+            }
         )
     }
 
@@ -56,8 +59,32 @@ abstract class MessageListener {
         }
     }
 
+    fun consumeAndProcessRecord(record: ConsumerRecord<String, String>) {
+        val message = RapidMessage.MessageConverter().convertFromJson(record.value())
+        message?.let {
+            val incomingMessage = it.messageData
+
+            if (shouldProcessMessage(incomingMessage)) {
+                processIncomingMessage(record, incomingMessage, message)
+                val newMessage = createNewMessage(incomingMessage, message)
+                if (newMessage != null && !shouldProcessMessage(newMessage.messageData)) {
+                    MessageProducer.send(newMessage)
+                } else {
+                    logger.error("Can not create new message, it will be consumed again and create a loop")
+                }
+            }
+        } ?: logger.error("Error deserializing record value: ${record.value()}")
+    }
+
     protected abstract fun processIncomingMessage(
-        record: ConsumerRecord<String, String>
+        record: ConsumerRecord<String, String>,
+        incomingMessage: MessageData,
+        message: RapidMessage
     )
+
+    protected abstract fun createNewMessage(
+        incomingMessage: MessageData,
+        originalMessage: RapidMessage
+    ): RapidMessage?
 }
 

@@ -1,7 +1,8 @@
 import no.jpro.kafkaworkshop.logger
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.isAutoCommitEnabled
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -37,13 +38,11 @@ abstract class MessageListener {
         ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
         ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
         ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
-        ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG to "6000",
-        ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG to "6000",
-        ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG to "1000"
+        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to isAutoCommitEnabled
     )
 
     /**
-     * Begins listening to Kafka for messages. Messages are consumed, checked if they should be processed
+     * Begins listening to Kafka for messages. Messages are consumed, checked if they should be processed,
      * and then processed.
      *
      * @param consumerGroupId The consumer group ID for the consumer.
@@ -62,17 +61,17 @@ abstract class MessageListener {
     private fun consumeMessages(
         consumerGroupId: String,
         shouldProcess: (Payload) -> Boolean,
-        processRecord: (ConsumerRecord<String, String>) -> Unit
+        processRecord: (ConsumerRecord<String, String>, KafkaConsumer<String, String>) -> Unit
     ) {
         logger().info("consumeMessages")
         KafkaConsumer<String, String>(consumerProperties(consumerGroupId)).use { consumer ->
             consumer.subscribe(listOf(RapidConfiguration.topic))
             while (true) {
                 val records = consumer.poll(Duration.ofMillis(100))
-                records.forEach { record ->
+                for (record in records) {
                     val message = RapidMessage.convertFromJson(record.value())
                     if (message != null && shouldProcess(message.payload)) {
-                        processRecord(record)
+                        processRecord(record, consumer)
                     }
                 }
             }
@@ -81,24 +80,33 @@ abstract class MessageListener {
 
     /**
      * Consumes a record from Kafka. If the message from the record can be deserialized and should be processed,
-     * it's then passed to `processMessage` for further actions.
+     * it's then passed to `processMessage` for further actions. Offset commit is also managed manually.
      *
      * @param record The Kafka consumer record to be consumed.
+     * @param consumer The Kafka consumer instance for committing offsets manually.
      */
-    private fun consumeRecord(record: ConsumerRecord<String, String>) {
-        val message = RapidMessage.convertFromJson(record.value())
-        message?.let {
-            if (shouldProcessMessage(it.payload)) {
-                val newMessage = processMessage(it)
-                if (newMessage != null) {
-                    if (!shouldProcessMessage(newMessage.payload)) {
-                        MessageProducer.send(newMessage)
-                    } else {
-                        logger().error("Cannot create new message; it will be consumed again and create a loop")
+    private fun consumeRecord(record: ConsumerRecord<String, String>, consumer: KafkaConsumer<String, String>) {
+        try {
+            val message = RapidMessage.convertFromJson(record.value())
+            message?.let {
+                if (shouldProcessMessage(it.payload)) {
+                    val newMessage = processMessage(it)
+                    if (newMessage != null) {
+                        if (!shouldProcessMessage(newMessage.payload)) {
+                            MessageProducer.send(newMessage)
+                            if (!isAutoCommitEnabled) {
+                                consumer.commitSync()
+                            }
+                        } else {
+                            logger().error("Cannot create new message; it will be consumed again and create a loop")
+                        }
                     }
                 }
-            }
-        } ?: logger().error("Error deserializing record value: ${record.value()}")
+            } ?: logger().error("Error deserializing record value: ${record.value()}")
+        } catch (e: Exception) {
+            logger().error("Exception while processing message: ${e.message}")
+            // Offset is not committed in case of an exception, so this message will be reprocessed.
+        }
     }
 
     /**

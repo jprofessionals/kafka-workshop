@@ -21,8 +21,23 @@ typealias Payload = Map<String, JsonNode>
 class RapidConfiguration {
 
     companion object {
+
         /** The topic name used for Rapid messages. */
         const val topic: String = "rapid-1"
+
+        /**
+         * Determines whether or not auto-commit of offsets is enabled.
+         *
+         * When set to `true`, the consumer's offset will be periodically committed
+         * in the background. This is useful for most at-least-once delivery
+         * guarantees.
+         *
+         * When set to `false`, the consumer application should manually commit
+         * offsets using `commitSync` or `commitAsync` methods. This provides
+         * better control over when a record is considered as consumed but also
+         * means the application has to handle offset management.
+         */
+        var isAutoCommitEnabled: Boolean = true
 
         /**
          * A global Jackson object mapper configuration.

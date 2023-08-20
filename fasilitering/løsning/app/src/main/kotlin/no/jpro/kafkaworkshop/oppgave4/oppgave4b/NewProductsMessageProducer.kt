@@ -58,5 +58,5 @@ class NewProductsMessageProducer {
      * @property name The name of the product.
      * @property color The color of the product.
      */
-    private data class Product(val name: String, val color: String)
+    data class Product(val name: String, val color: String)
 }

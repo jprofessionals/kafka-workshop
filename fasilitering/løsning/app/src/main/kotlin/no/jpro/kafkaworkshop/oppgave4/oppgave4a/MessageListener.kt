@@ -19,14 +19,6 @@ import java.time.Duration
 abstract class MessageListener(private val messageProducer: MessageProducer = MessageProducer()) {
 
     /**
-     * Checks whether the provided [incomingMessage] should be processed.
-     *
-     * @param incomingMessage The message data to check.
-     * @return `true` if the message should be processed, `false` otherwise.
-     */
-    protected abstract fun shouldProcessMessage(incomingMessage: Payload): Boolean
-
-    /**
      * Sets the properties for Kafka consumer.
      *
      * @param consumerGroupId The consumer group ID for the consumer.
@@ -63,7 +55,6 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
         shouldProcess: (Payload) -> Boolean,
         processRecord: (ConsumerRecord<String, String>, KafkaConsumer<String, String>) -> Unit
     ) {
-        logger().info("consumeMessages")
         KafkaConsumer<String, String>(consumerProperties(consumerGroupId)).use { consumer ->
             consumer.subscribe(listOf(RapidConfiguration.topic))
             while (true) {
@@ -107,6 +98,14 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
             logger().error("Exception while processing message: ${e.message}")
         }
     }
+
+    /**
+     * Checks whether the provided [incomingMessage] should be processed.
+     *
+     * @param incomingMessage The message data to check.
+     * @return `true` if the message should be processed, `false` otherwise.
+     */
+    protected abstract fun shouldProcessMessage(incomingMessage: Payload): Boolean
 
     /**
      * Processes the [originalMessage] and returns a new message or null if no new message is created.

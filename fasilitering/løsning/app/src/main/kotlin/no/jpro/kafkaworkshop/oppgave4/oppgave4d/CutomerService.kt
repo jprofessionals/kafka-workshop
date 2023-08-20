@@ -16,17 +16,6 @@ fun main() {
 open class CustomerService(messageProducer: MessageProducer = MessageProducer()) : MessageListener(messageProducer) {
 
     /**
-     * Processes the given original message by adding a "processed" flag.
-     *
-     * @param originalMessage The original message to be processed.
-     * @return A new message with additional data indicating it has been processed.
-     */
-    override fun processMessage(originalMessage: RapidMessage): RapidMessage {
-        val additionalData = mapOf("processed" to messageNodeFactory.booleanNode(true))
-        return originalMessage.copyWithAdditionalData(this::class.simpleName!!, additionalData)
-    }
-
-    /**
      * Determines whether a message should be processed based on certain criteria.
      *
      * @param incomingMessage The incoming message data.
@@ -39,5 +28,16 @@ open class CustomerService(messageProducer: MessageProducer = MessageProducer())
         val alreadyProcessed = incomingMessage["processed"]?.booleanValue() == true
 
         return productExists && internalIdExists && !alreadyProcessed
+    }
+
+    /**
+     * Processes the given original message by adding a "processed" flag.
+     *
+     * @param originalMessage The original message to be processed.
+     * @return A new message with additional data indicating it has been processed.
+     */
+    override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        val additionalData = mapOf("processed" to messageNodeFactory.booleanNode(true))
+        return originalMessage.copyWithAdditionalData(this::class.simpleName!!, additionalData)
     }
 }

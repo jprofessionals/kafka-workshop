@@ -45,6 +45,4 @@ class MetricServiceTest {
 
         assertThat(vectors).isEmpty()
     }
-
-    // Add more tests...
 }

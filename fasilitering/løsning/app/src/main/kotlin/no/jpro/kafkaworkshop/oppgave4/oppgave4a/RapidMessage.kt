@@ -3,6 +3,7 @@ package no.jpro.kafkaworkshop.oppgave4.oppgave4a
 import no.jpro.kafkaworkshop.logger
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.UUID
 
 /**
  * Represents a message used in the Rapid communication protocol.
@@ -89,8 +90,9 @@ data class RapidMessage(
     fun copyWithAdditionalData(callerClass: String, additionalPayload: Payload): RapidMessage {
         val newParticipatingSystem = ParticipatingSystem(callerClass)
 
-        // Check if a ParticipatingSystem with the same applicationName already exists
-        if (participatingSystems.any { it.applicationName == newParticipatingSystem.applicationName }) {
+        // Check if a ParticipatingSystem with the same applicationName already exists more than once.
+        val existingOccurrences = participatingSystems.count { it.applicationName == newParticipatingSystem.applicationName }
+        if (existingOccurrences > 1) {
             throw IllegalArgumentException("A ParticipatingSystem with the applicationName $callerClass already exists.")
         }
 

@@ -26,7 +26,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("org.mockito:mockito-core:3.11.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
-
+    testImplementation("org.apache.kafka:kafka-streams-test-utils:3.5.1")
 }
 
 tasks.test {

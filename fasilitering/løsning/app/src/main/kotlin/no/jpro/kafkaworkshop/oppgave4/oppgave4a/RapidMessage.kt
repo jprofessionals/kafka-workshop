@@ -20,7 +20,6 @@ data class RapidMessage(
      * Represents a system that has participated in the lifecycle of a RapidMessage.
      *
      * @property applicationName The name of the application or system.
-     * @property eventTime The time when the system interacted with or processed the message.
      */
     data class ParticipatingSystem(
         val applicationName: String,

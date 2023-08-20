@@ -10,6 +10,7 @@ import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.kstream.KStream
 import org.apache.kafka.streams.kstream.KTable
+import org.apache.kafka.streams.kstream.ValueMapper
 import java.util.*
 
 fun main() {
@@ -17,16 +18,17 @@ fun main() {
 }
 
 /**
- * The `MetricService` class is responsible for processing and tracking metrics
- * related to messages being passed through the Kafka streams. It counts the
- * vectors of participating systems from the incoming messages and logs their occurrences.
+ * MetricService: A Kafka Streams Application
+ *
+ * This class defines a Kafka Streams application named 'MetricService'.
+ * The purpose of the application is to consume records from a Kafka topic
+ * configured in `RapidConfiguration`, and calculate vector counts based
+ * on the `participatingSystems` field in each JSON message.
+ *
+ * Vector counts are then logged for further use or analysis.
  */
 class MetricService {
-    private val log = logger()
 
-    /**
-     * Starts the Kafka stream processing to capture and log metric data.
-     */
     fun start() {
         val applicationId = "metricService-1"
         val bootstrapServers = "localhost:9092"
@@ -48,43 +50,49 @@ class MetricService {
         val builder = StreamsBuilder()
         val textLines: KStream<String, String> = builder.stream(RapidConfiguration.topic)
 
-        val objectMapper = jacksonObjectMapper()
 
-        // Process the incoming messages, extracting vectors of participating systems
-        // and count occurrences of each vector
-        val vectorCounts: KTable<String, Long> = textLines.flatMapValues { value ->
-            try {
-                val jsonNode = objectMapper.readTree(value)
-                val participatingSystems = jsonNode["participatingSystems"]?.mapNotNull {
-                    it["applicationName"]?.asText()
-                } ?: emptyList()
-
-                if (participatingSystems.size >= 2) {
-                    val lastTwo = participatingSystems.takeLast(2)
-                    listOf("${lastTwo[0]}->${lastTwo[1]}")
-                } else {
-                    emptyList()
-                }
-            } catch (e: Exception) {
-                log.error("Failed to process JSON: $value", e)
-                emptyList<String>()
-            }
-        }
+         // Use the vectorCounter function to transform the Kafka stream, group them, and count the vectors. The result is stored in a KTable.
+        val vectorCounts: KTable<String, Long> = textLines.flatMapValues(vectorCounter)
             .groupBy { _, vector -> vector }.count()
 
         // Log the vector counts
-        vectorCounts.toStream().foreach { vector, count -> log.info("vector: $vector -> $count") }
+        vectorCounts.toStream().foreach { vector, count -> logger().info("vector: $vector -> $count") }
 
         val topology = builder.build()
         val streams = KafkaStreams(topology, streamsConfiguration)
 
-        log.info("start")
+        logger().info("start")
         streams.start()
 
         // Ensure graceful shutdown on application termination
         Runtime.getRuntime().addShutdownHook(Thread {
             streams.close()
-            log.info("stop")
+            logger().info("stop")
         })
+    }
+
+    /**
+     * A ValueMapper function that reads a JSON string, extracts a
+     * 'participatingSystems' list, and creates vectors for the last two
+     * systems. These vectors are then counted in the stream.
+     */
+    val vectorCounter: ValueMapper<String, Iterable<String>> = ValueMapper { value ->
+        val objectMapper = jacksonObjectMapper()
+        try {
+            val jsonNode = objectMapper.readTree(value)
+            val participatingSystems = jsonNode["participatingSystems"]?.mapNotNull {
+                it["applicationName"]?.asText()
+            } ?: emptyList()
+
+            if (participatingSystems.size >= 2) {
+                val lastTwo = participatingSystems.takeLast(2)
+                listOf("${lastTwo[0]}->${lastTwo[1]}")
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            logger().error("Failed to process JSON: $value", e)
+            emptyList()
+        }
     }
 }

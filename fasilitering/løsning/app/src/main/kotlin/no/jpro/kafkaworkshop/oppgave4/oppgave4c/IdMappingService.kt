@@ -1,10 +1,11 @@
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.isNotNull
 
 fun main() {
-    IdMapping().listen("IdMapping-listener-1")
+    IdMappingService().listen("IdMapping-listener-1")
 }
 
 /**
@@ -14,7 +15,7 @@ fun main() {
  * If a message has an external product ID and lacks an internal ID, it maps the external ID
  * using a predefined mapping and appends the internal ID to the message data.
  */
-class IdMapping : MessageListener() {
+open class IdMappingService(messageProducer: MessageProducer = MessageProducer()) : MessageListener(messageProducer) {
 
     companion object {
         /**

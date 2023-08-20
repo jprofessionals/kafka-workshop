@@ -16,7 +16,7 @@ import java.time.Duration
  * Implementations of this class can define specific message processing behaviors by
  * overriding the `shouldProcessMessage` and `processMessage` methods.
  */
-abstract class MessageListener {
+abstract class MessageListener(private val messageProducer: MessageProducer = MessageProducer()) {
 
     /**
      * Checks whether the provided [incomingMessage] should be processed.
@@ -93,7 +93,7 @@ abstract class MessageListener {
                     val newMessage = processMessage(it)
                     if (newMessage != null) {
                         if (!shouldProcessMessage(newMessage.payload)) {
-                            MessageProducer().send(newMessage)
+                            messageProducer.send(newMessage)
                             if (!isAutoCommitEnabled) {
                                 consumer.commitSync()
                             }

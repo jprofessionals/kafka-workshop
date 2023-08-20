@@ -1,3 +1,4 @@
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
@@ -12,7 +13,7 @@ fun main() {
  * It checks if a product exists, if it has an internal ID, and if it has not been previously processed.
  * If all conditions are met, it marks the message as processed.
  */
-class CustomerService : MessageListener() {
+open class CustomerService(messageProducer: MessageProducer = MessageProducer()) : MessageListener(messageProducer) {
 
     /**
      * Processes the given original message by adding a "processed" flag.

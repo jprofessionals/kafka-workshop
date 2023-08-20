@@ -83,9 +83,22 @@ data class RapidMessage(
      * @param callerClass The class or system interacting with the message.
      * @param additionalPayload Additional message data.
      * @return A new RapidMessage object.
+     * @throws IllegalArgumentException if a participating system with the same applicationName already exists.
+     * @throws IllegalStateException if the maximum number of participating systems is reached.
      */
     fun copyWithAdditionalData(callerClass: String, additionalPayload: Payload): RapidMessage {
         val newParticipatingSystem = ParticipatingSystem(callerClass)
+
+        // Check if a ParticipatingSystem with the same applicationName already exists
+        if (participatingSystems.any { it.applicationName == newParticipatingSystem.applicationName }) {
+            throw IllegalArgumentException("A ParticipatingSystem with the applicationName $callerClass already exists.")
+        }
+
+        // Check if the maximum number of participating systems is reached
+        if (participatingSystems.size >= RapidConfiguration.maxParticipatingSystems) {
+            throw IllegalStateException("Maximum number of participating systems (${RapidConfiguration.maxParticipatingSystems}) reached.")
+        }
+
         return this.copy(
             participatingSystems = participatingSystems + newParticipatingSystem,
             payload = payload + additionalPayload

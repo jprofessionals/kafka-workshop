@@ -51,6 +51,9 @@ class RapidConfiguration {
 
         /** A global instance of `JsonNodeFactory` for creating JSON nodes. */
         val messageNodeFactory = JsonNodeFactory.instance
+
+        /** Maximum number of participating systems that can be added to a RapidMessage. */
+        const val maxParticipatingSystems: Int = 10
     }
 }
 

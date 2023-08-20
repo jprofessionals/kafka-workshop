@@ -105,7 +105,6 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
             } ?: logger().error("Error deserializing record value: ${record.value()}")
         } catch (e: Exception) {
             logger().error("Exception while processing message: ${e.message}")
-            // Offset is not committed in case of an exception, so this message will be reprocessed.
         }
     }
 

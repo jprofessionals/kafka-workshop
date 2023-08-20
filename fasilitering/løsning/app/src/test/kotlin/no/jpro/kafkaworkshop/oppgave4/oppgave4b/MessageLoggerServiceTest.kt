@@ -1,6 +1,7 @@
 package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
 import com.fasterxml.jackson.databind.JsonNode
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import org.assertj.core.api.Assertions
@@ -9,8 +10,17 @@ import org.junit.jupiter.api.Test
 
 class MessageLoggerServiceTest {
 
-    private lateinit var messageLoggerService: MessageLoggerService
+    class TestableMessageLoggerService : MessageLoggerService() {
+        public override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
+            return super.processMessage(originalMessage)
+        }
 
+        public override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
+            return super.shouldProcessMessage(incomingMessage)
+        }
+    }
+
+    private lateinit var messageLoggerService: TestableMessageLoggerService
 
     val testMessage = RapidMessage.fromData(
         "TestApplication", "SampleEvent", mapOf(
@@ -21,7 +31,7 @@ class MessageLoggerServiceTest {
 
     @BeforeEach
     fun setUp() {
-        messageLoggerService = MessageLoggerService()
+        messageLoggerService = TestableMessageLoggerService()
     }
 
     @Test

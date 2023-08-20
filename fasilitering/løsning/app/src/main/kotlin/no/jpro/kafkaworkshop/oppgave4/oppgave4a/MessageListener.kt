@@ -93,7 +93,7 @@ abstract class MessageListener {
                     val newMessage = processMessage(it)
                     if (newMessage != null) {
                         if (!shouldProcessMessage(newMessage.payload)) {
-                            MessageProducer.send(newMessage)
+                            MessageProducer().send(newMessage)
                             if (!isAutoCommitEnabled) {
                                 consumer.commitSync()
                             }

@@ -24,7 +24,7 @@ data class RapidMessage(
      */
     data class ParticipatingSystem(
         val applicationName: String,
-        val eventTime: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Europe/Oslo"))
+        //val eventTime: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Europe/Oslo")) // Complicates testing, removed to simplify workshop
     )
 
     companion object {

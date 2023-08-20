@@ -19,15 +19,14 @@ fun main() {
  *
  * The class demonstrates how to create a sample product message and send it to the Kafka topic.
  */
-class NewProductsMessageProducer {
-    private val logger = LoggerFactory.getLogger(NewProductsMessageProducer::class.java)
+class NewProductsMessageProducer(private val messageProducer: MessageProducer = MessageProducer()) {
 
     /**
      * Produces a sample product message and sends it.
      */
     fun produceMessage() {
         val sampleMessage = createSampleProductMessage()
-        MessageProducer.send(sampleMessage)
+        messageProducer.send(sampleMessage)
     }
 
     /**

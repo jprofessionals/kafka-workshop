@@ -12,7 +12,7 @@ fun main() {
 /**
  * The `MessageLoggerService` listens to messages and logs their content.
  */
-class MessageLoggerService : MessageListener() {
+open class MessageLoggerService : MessageListener() {
 
     /**
      * Logs the content of the original message.
@@ -23,7 +23,7 @@ class MessageLoggerService : MessageListener() {
      * @param originalMessage The original message to process.
      * @return Always returns null as this service is just logging the message without producing any new message.
      */
-    public override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
+    override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
         logger().info(originalMessage.toJsonText() ?: "Unable to convert message to JSON.")
         return null
     }
@@ -37,7 +37,7 @@ class MessageLoggerService : MessageListener() {
      * @param incomingMessage The incoming message to check.
      * @return Always true.
      */
-    public override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
+    override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
         return true
     }
 }

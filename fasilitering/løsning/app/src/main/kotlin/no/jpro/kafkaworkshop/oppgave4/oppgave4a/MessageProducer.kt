@@ -29,27 +29,27 @@ class MessageProducer {
             CommonClientConfigs.SECURITY_PROTOCOL_CONFIG to "PLAINTEXT"
         )
 
-        /**
-         * Sends the provided [rapidMessage] to a Kafka topic as defined by `RapidConfiguration.topic`.
-         *
-         * This method serializes the `RapidMessage` object to JSON and then sends it to the Kafka topic.
-         * If any errors are encountered during the sending process, they are logged.
-         *
-         * @param rapidMessage The `RapidMessage` object to be sent to Kafka.
-         */
-        fun send(rapidMessage: RapidMessage) {
-            KafkaProducer<String, String>(producerProperties()).use { producer ->
-                try {
-                    val jsonMessage = rapidMessage.toJsonText()
-                    val record = ProducerRecord(RapidConfiguration.topic, "", jsonMessage)
+    }
+    /**
+     * Sends the provided [rapidMessage] to a Kafka topic as defined by `RapidConfiguration.topic`.
+     *
+     * This method serializes the `RapidMessage` object to JSON and then sends it to the Kafka topic.
+     * If any errors are encountered during the sending process, they are logged.
+     *
+     * @param rapidMessage The `RapidMessage` object to be sent to Kafka.
+     */
+    fun send(rapidMessage: RapidMessage) {
+        KafkaProducer<String, String>(producerProperties()).use { producer ->
+            try {
+                val jsonMessage = rapidMessage.toJsonText()
+                val record = ProducerRecord(RapidConfiguration.topic, "", jsonMessage)
 
-                    logger().info("Sending message $jsonMessage")
-                    producer.send(record)
-                    logger().info("Message has been sent")
+                logger().info("Sending message $jsonMessage")
+                producer.send(record)
+                logger().info("Message has been sent")
 
-                } catch (e: Exception) {
-                    logger().error("Error sending message $rapidMessage", e)
-                }
+            } catch (e: Exception) {
+                logger().error("Error sending message $rapidMessage", e)
             }
         }
     }

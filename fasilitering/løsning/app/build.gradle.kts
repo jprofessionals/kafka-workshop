@@ -1,6 +1,7 @@
 plugins {
     java
     kotlin("jvm") version "1.8.20"
+    id("com.github.davidmc24.gradle.plugin.avro") version "1.8.0"
 }
 
 group = "no.jpro.kafkaworkshop"
@@ -8,11 +9,13 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://packages.confluent.io/maven/")
 }
 
 dependencies {
     implementation("org.apache.kafka:kafka-streams:3.4.0")
     implementation("org.apache.kafka:kafka-clients:3.4.0")
+    implementation("io.confluent:kafka-avro-serializer:7.4.1")
     implementation("ch.qos.logback:logback-classic:1.2.9")
     implementation("ch.qos.logback:logback-core:1.2.9")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")

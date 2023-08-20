@@ -1,0 +1,15 @@
+{
+  "namespace": "no.jpro.kafkaworkshop.oppgave3",
+  "type": "record",
+  "name": "AvroMessage",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "string"
+    }
+  ]
+}

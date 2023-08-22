@@ -1,49 +1,46 @@
 # Oppgave 4b Message producer og enkel message consumer(logger) mot rapid topic.
 
 ##  Formål
-Bli kjent med hvordan vi kan produsere og lytte på meldinger med et enkelt rapid rammeverk.
-Lage komponenter som gjør det enkelt å produsere og se meldinger mot rapid topic for resterende oppgaver.
+Målet med denne deloppgaven er å bli fortrolig med produksjon og lytting av meldinger i et Rapid-rammeverk. 
+Oppgaven involverer å lage komponenter som enkelt kan produsere og logge meldinger for Rapid-emnet, noe som vil være nyttig for de resterende oppgavene.
 
 ## Overordnet beskrivelse
-Vi lager en producer som kan produsere meldinger mot rapid. 
-Vi lager en meldingslytter som skriver alle meldinger på rapid topic til log.
+I denne deloppgaven vil vi utvikle en meldingsprodusent (NewProductsMessageProducer) for å sende meldinger til Rapid-emnet. I tillegg vil vi også opprette en meldingslytter (MessageLoggerService) som vil logge alle meldinger som sendes på dette emnet.
 
 ## Nytt topic: "rapid-1"
 Se på oppskriften i oppgave 1, og lag et nytt topic som du kaller "rapid-1"
 
 ## NewProductsMessageProducer
 
-### Klargjør enhetstest
-Kommenter inn testklassen NewProductsMessageProducerTest. 
-Sjekk at testen kan kjøres men feiler.
+### Forbered Enhetstesting
+Aktiver testklassen NewProductsMessageProducerTest. Kontroller at testen kan kjøres, selv om den vil feile i denne omgang.
 
-### NewProductsMessageProducer
-Fullfør TODO i produceMessage() funksjonen.
+### Implementasjon av NewProductsMessageProducer
+Fullfør "TODO"-merket kode i produceMessage()-funksjonen.
 
-### Kjør enhetstest
-Sjekk at NewProductsMessageProducerTest nå kjører uten feil
+### Utfør Enhetstesting
+Sørg for at NewProductsMessageProducerTest nå kjøres uten feil.
 
 ## MessageLoggerService
 
-### Sett opp kodeskjelett for klassen
-Kommenter inn koden for MessageLoggerService
-Genererer metoder spm skal overrides
+### Etabler kodebase
+Aktiver koden for MessageLoggerService og generer nødvendige metoder som skal overrides.
 
-### Klargjør enhetstest
-Finn enhetstest for klassen, kommenter den inn, kjør den og se at den feiler.
+### Forbered Enhetstesting
+Identifiser enhetstesten for klassen, aktiver den, kjør testen og bekreft at den feiler.
 
 ### Fullfør MessageLoggerService
-Gjør TODOs ferdig, og sjekk at testen kjører
+Fullfør alle "TODO"-merkede oppgaver i koden og bekreft at testen nå kjøres uten feil.
 
 
-## Kjør opp komponentene mot rapid
-Start MessageLoggerService via main funksjonen i klassen, 
-Vent på meldingen "Successfully joined group" i loggen.
-Send en melding til rapid-1 ved å kjøre main funkjsonen i NewProductsMessageProducer
+## Test Komponentene mot Rapid-emnet
+Start MessageLoggerService ved å kjøre dens main-funksjon.
+Vent på loggmeldingen "Successfully joined group."
+Send en testmelding til "rapid-1" ved å kjøre main-funksjonen i NewProductsMessageProducer.
 
-## Forventet output
+## Forventet resultat i MessageLoggerService
 
-### Forventet output fra NewProductsMessageProducer i MessageLoggerService
+### Forventet loggutskrift fra NewProductsMessageProducer 
 ```json
 {
   "eventName": "SampleEvent",

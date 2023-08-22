@@ -1,39 +1,36 @@
 # Oppgave 4c IdMappingSevice
 
 ##  Formål
-Se hvordan beriking av en melding kan fungere i Rapids & Rivers.
+Denne oppgaven fokuserer på hvordan en melding kan bli beriket i et Rapids & Rivers rammeverk.
 
 ## Overordnet beskrivelse
-Lage en komponent som tar i mot medlingen fra oppgave 4b.
-Meldingen har 'productExternalId'. Vi skal mappen veriden til et nytt felt productInternalId.
-Feltet skal legges på samme nivå som productExternalId
-
+Målet er å lage en komponent som mottar meldinger fra Oppgave 4b. 
+Disse meldingene inneholder et felt kalt 'productExternalId', og oppgaven er å kartlegge denne verdien til et nytt felt, 'productInternalId'. 
+Dette nye feltet skal eksistere på samme nivå i json som 'productExternalId'.
 
 ## IdMappingServivce
 
-### Kodeskjelett og test
-Lag main-funksjon, opprett klassen, og kjør test, på samme måte som for MessageLoggerService. Testen vil feile siden en del kode mangler.
-Pass på at du sender inn annen consumerGroupId enn i forrige oppgave, ellers vil komponentene fordele meldinger mellom seg.
+### Oppsett av Kodebase og Tester
+Opprett en main-funksjon og klassestruktur for IdMappingService, lik den du lagde for MessageLoggerService. Siden deler av koden mangler, vil den innledende testen feile. 
+Husk å bruke en annen consumerGroupId enn i forrige oppgave for å unngå konflikter i meldingsfordeling.
 
-### ShouldProcessMessage
-Denne koden kjøres to ganger. Først på meldingen som kommer inn fra rapid for å finne ut om den skal behandles.
-Etter at ny melding for rapid er konstrert, blir den kjørt på nytt for å se om neste melding vil igjen bli plukket opp og lage en loop
-Bruk følgende uttrekk fra inkommende melding for å finne ut om meldingen skal prosesseres i denne komponenten.
+### ShouldProcessMessage funksjonen
+Denne metoden kjøres to ganger: først på den innkommende meldingen fra Rapid for å avgjøre om den skal behandles, og deretter på den nyproduserte meldingen for å forhindre uønskede løkker. 
+For å avgjøre om en melding skal behandles, bruk følgende kodesnutt:
 ```kotlin
         val hasExternalId = incomingMessage["productExternalId"]?.isTextual ?: false
         val lacksInternalId = !incomingMessage["productInternalId"].isNotNull()
 ```
 
 ### Legg inn mappingdata
-Vi legger det inn i klassen som en hardkodet map:
+Gjør dette tilgjengelig inne i klassen. Den skal brukes til å mappe fra ekstern til intern id
 ```kotlin
     mapOf("10" to "A14", "11" to "B55", "12" to "H2", "13" to "X91", "14" to "V20")
 
 ```
 
-### processMessage(...)
-Denne metoden skal nå gjøre mappingen, oppdatere melding med intern id, 
-og returnere meldingen slik at den kan bli lagt på topic
+### Implementering av processMessage(...)
+Metoden skal mappe 'productExternalId' til 'productInternalId' og returnere den oppdaterte meldingen. Bruk følgende kode for å oppnå dette:
 ```kotlin
         val externalId = originalMessage.payload["productExternalId"]?.asText()
         val internalId = //TODO: mapping til ny kode
@@ -44,19 +41,19 @@ og returnere meldingen slik at den kan bli lagt på topic
         )
 ```
 
-### Kjør enhetstest
-Sjekk at den nå går grønt
+### Utfør Tester
+Kjør enhetstestene for IdMappingService og bekreft at de nå passerer.
 
-## Kjør opp IdMappingSevice mot rapid
+## Test IdMappingService mot Rapid-topic
 Start IdMappingService.
-Pass på at MessageLoggerService kjører.
-Vent til begge har beskjeden: "Successfully joined group"
-Kjør NewProductsMessageProducer for å legge ut en melding.
+Sørg for at MessageLoggerService også er aktiv.
+Vent til begge logger meldingen "Successfully joined group."
+Kjør NewProductsMessageProducer for å sende en testmelding.
 
-## Forventet output i MessageLoggerService
+## Forventet utskrifdt i MessageLoggerService
 
-### Forventet output fra NewProductsMessageProducer
-Samme melding som i oppgave 4b
+### Fra NewProductsMessageProducer
+Den forventede utskriften skal være identisk med den i Oppgave 4b.
 
 
 ### Forventet output fra IdMappingService

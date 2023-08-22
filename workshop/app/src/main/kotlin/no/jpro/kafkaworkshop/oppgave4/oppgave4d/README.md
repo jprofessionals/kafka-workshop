@@ -1,41 +1,40 @@
 # Oppgave 4d CustomerService
 
 ##  Formål
-For å ha et complett case, trenger vi en tjenste som benytter seg av intern id
-Vise at vi ønsker kvitteringsmelinger når det ikke er flere operasjoner som skal gjøres, 
-slik at rapid, og listen participatingSystems, blir en komplett logg over operasjonene som er utført.
+Oppgaven har som mål å lage en komponent som bruker den interne ID-en generert av IdMappingService fra Oppgave 4c.
+Denne klasssen sender ikke meldinger til ny komponent. For å sikre at CustomerService ligger som Participating system, legger vi en kvitteringsmelding på rapid.
 
 
 ## Overordnet beskrivelse
-Lage en komponent som tar i mot medlingen fra IdMappingService fra oppgave 4b.
+CustomerService vil ta imot meldinger fra IdMappingService og utføre operasjoner basert på den interne produkt-IDen.
 
 ## CustomerService
 
 ### Kodeskjelett og test
-Hent inspirasjon fra tidligere oppgaver for å sette opp initielt skjelett og kjøre feilende test. 
-Husk å bruke ny consumerGroupId.
+Benytt tidligere oppgaver som referanse for å sette opp et grunnleggende kodeskjelett og kjøre en initial test som vil feile. 
+Husk å bruke en annen consumerGroupId for å unngå å motta meldinger ment for andre komponenter.
 
 ### Entry kriteria 
-Skal ha: ```kotlin incomingMessage["product"]?.isNotNull() ?: false```
-Skal ha: ```kotlin incomingMessage["productInternalId"]?.isNotNull() ?: false```
-Skal ikke ha: ```kotlin incomingMessage["processed"]?.booleanValue() == true```
+Meldingen må ha et produktfelt: ```kotlin incomingMessage["product"]?.isNotNull() ?: false```
+Meldingen må ha en intern produkt-ID: ```kotlin incomingMessage["productInternalId"]?.isNotNull() ?: false```
+Meldingen må ikke allerede være behandlet: ```kotlin incomingMessage["processed"]?.booleanValue() != true```
 
 ### Tilleggsdata for ny melding(kvittering til rapid)
 ```kotlin mapOf("processed" to messageNodeFactory.booleanNode(true))```
 
-### Kjør enhetstest
-Sjekk at den nå går grønt
+### Utfør Enhetstest
+Kjør enhetstesten for CustomerService og bekreft at den nå går grønt.
 
 ## Kjør Customerservice mot rapid
-Start CustomerService
-Pass på at MessageLoggerservice og IdMappingService kjører
-Vent til alle tre har beskjeden: "Successfully joined group"
-Kjør NewProductsMessageProducer for å legge ut en melding.
+Start opp CustomerService.
+Sørg for at både MessageLoggerService og IdMappingService også er i drift.
+Vent til alle tre tjenestene logger meldingen "Successfully joined group."
+Kjør NewProductsMessageProducer for å generere en ny melding.
 
 ## Forventet output i MessageLoggerService
 
-### Forventet output fra NewProductsMessageProducer og IdMappingService
-Samme meldinger som tidligere
+### Fra NewProductsMessageProducer og IdMappingService
+Meldingene skal være de samme som tidligere oppgaver.
 
 ### Forventet output fra Customerservice
 ```json
@@ -64,7 +63,7 @@ Samme meldinger som tidligere
 }
 ```
 
-Legg merke til at det er på grunn av kvitteringsmeldingen fra CustomerService at vi kan se CustomerService som participatingSystem på rapid topic.
+Legg merke til at CustomerService blir inkludert i "participatingSystems" takket være kvitteringsmeldingen, og det gir oss en komplett logg over alle operasjonene som har blitt utført.
 
 
 

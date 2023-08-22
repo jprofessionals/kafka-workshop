@@ -1,7 +1,7 @@
-# Oppgave 4f Need pattern
+# Oppgave 4f Implementering av "Need Pattern" i R&R
 
 ## Formål
-Eksempel på R&R need pattern
+Eksempel på R&R need pattern der en tjeneste etterspør informasjon som andre tjenester kan levere.
 
 ## Overordnet beskrivelse
 I R&R need pattern kan man ha en tjeneste som etterspør data fra Rapid, og andre tjenester kan svare på behovet.
@@ -10,18 +10,18 @@ Tilbydertjenestene er lagt inn. Vi skal her bare lage 'TicketOfficeService', som
 Om det er lite tid igjen i workshopen, kan du hente inn 'TicketOfficeService' fra løsning for å spare tid.
 
 ## TicketOfficeService
-Opprett TicketOfficeService. Se på NewProductsMessageProducer og lytterklassene for inspirasjon. 
-Legg merke til at denne klassen starter en melding, og også må starte en lytter i samme klasse for å lytte på svar.
-For at vektorene skal skrives ut riktig, må den også legge en kvitteringsmelding på rapid(som i CustomerService)
+Opprett en ny klasse kalt TicketOfficeService.
+Inspirasjon for oppsettet kan hentes fra NewProductsMessageProducer og de ulike lytterklassene.
+Klassen skal sende en startmelding og også initiere en lytter for å motta svar.
+Legg til en kvitteringsmelding i meldingsflyten, likt som i CustomerService.
 
-Finn enhetstest og aktiver den.
-Bruk MetricService og MessageLoggerService for å se på resultat.
-Hver gang denne klassen startes, sender den en melding, og må vente på at "Successfully joined group" kommer i loggen før den kan behandle resultat.
-
+## Enhetstesting
+Aktiver den tilhørende enhetstesten for TicketOfficeService.
+Bruk MetricService og MessageLoggerService for å observere og verifisere resultatene.
 
 ## Forventet output
 
-### MetricSercice
+### MetricService
 TicketOfficeService->TicketOfferService1 -> <Antall>
 TicketOfficeService->TicketOfferService2 -> <Antall>
 TicketOfferService1->TicketOfficeService -> <Antall>

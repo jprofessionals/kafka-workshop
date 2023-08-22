@@ -1,38 +1,38 @@
-# Oppgave 4a Gå gjennom hjelpefiler for Kafka Rapids & Rivers
+# Oppgave 4a: Utforsk Hjelpefiler for Kafka Rapids & Rivers
 
 ## Formål
-Få en oversikt over felleskode som brukes for å sende og produsere meldinger til rapid.
-Bli kjent med ting man trenger å tenke på når man skriver og leser fra samme topic.
+Denne deloppgaven har som mål å gi deg en oversikt over den felles koden som brukes for å sende og motta meldinger i et Rapid-miljø. 
+Du vil også bli introdusert for viktige aspekter å vurdere når du både skriver til og leser fra det samme emnet (topic).
 
 ## Overordnet beskrivelse
-I denne mappen finner du fire filer som kan brukes til å lage Kafka Rapids & Rivers komponenter.
-Filene skal gjøre det enkelt å opprette producere og konsumere mot en rapid. Gjør deg kjent med koden,
-slik at du er klar for å lage applikasjoner som jobber mot rapiden i de resterende oppgavene i oppgave4.
+I den angitte mappen finner du fire nøkkelfiler som tjener som grunnlag for å utvikle komponenter for Kafka Rapids & Rivers. 
+Disse filene er utformet for å lette arbeidet med å produsere og konsumere meldinger i et Rapid-system. 
+Bli kjent med denne koden, da den vil være nyttig for de etterfølgende oppgavene i oppgave 4.
 
-## Ansvarsområder for filene
+## Filenes Funksjonalitet
 
 ### RapidConfiguration
-Konfigurasjonsklasse for en rapidApplikasjon
+Dette er en konfigurasjonsklasse for en rapidApplikasjon
 
 ### RapidMessage
-Strukturen for meldingene som sendes på rapid topicet, og operasjoner som kjøres mot meldingene
+Denne klassen definerer strukturen på meldingene som sendes på det aktuelle Rapid-topicet, samt operasjoner som kan utføres på disse meldingene.
 
 ### MessageProducer
-En hjelpeklasse for å opprette meldinger på Rapid topicet.
+En hjelpeklasse laget for å generere meldinger på Rapid-topicet.
 
 ### MessageListener
-Abstrakt klasse som kan brukes for å lytte på rapid meldinger.
+Dette er en abstrakt klasse som kan brukes for å lytte på meldinger i et Rapid-system.
 
-## Spørsmål du kan tenke gjennom
+## Refleksjonsspørsmål
 Gå gjennom klassene, tenk gjennom hva de gjør, og se om du kan svare på følgende spørsmål
 
 ### Autocommit
-Om en melding feiler, vil applikasjonen hoppe over meldingen ved neste anledning, eller prøve på nytt?
+Hvis en melding feiler, vil applikasjonen da ignorere meldingen ved neste forsøk, eller vil den prøve å prosessere den på nytt?
 
-### Løkke
-Om en applikasjon både lytter og sender til samme topic. Er det muligheter for at applikasjonen lytter på samme melding som den produserer, og vi får en evig løkke?
-Kan vi få andre typer evige løkker som involverer flere applikasjoner som gjør operasjoner mot rapid topicet?
-Hvilke mekanismer i disse filene er lagt til for å forhindre evig løkke om noe settes opp feil?
+### Potensial for Evig Løkke
+Når en applikasjon både sender og lytter til det samme emnet, kan det oppstå en situasjon hvor applikasjonen hører på sin egen melding, resulterende i en evig løkke. 
+Finnes det også andre scenarier for evig løkke som involverer flere applikasjoner som bruker det samme Rapid-emnet? 
+Hvilke sikkerhetsmekanismer har disse filene for å forhindre slike evige løkker?
 
-### Dataformat på Rapid
-Hvilke metadatafelter finnes på meldingene som legges på rapid topicet? Hva kan de brukes til?
+### Dataformat i Rapid topic
+Hvilke metadatafelter er inkludert i meldingene som sendes i Rapid-emnet, og hva er deres potensielle anvendelser?

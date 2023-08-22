@@ -1,20 +1,19 @@
-Oppgave 4e Kafka streams for å logge kall mellom tjenester
+# Oppgave 4e Bruk av Kafka Streams for Logging av Tjenestekall
 
 ##  Formål
-De kan være vanskelig å ha oversikt over en R&R applikasjon når den vokser. Det kan være en fordel å analysere relasjoner for å lage diagrammer.
+Når en Rapids & Rivers (R&R) applikasjon blir større, kan det være utfordrende å holde oversikt over tjenestenes interaksjoner. Målet her er å logge og telle vektorer som representerer kall mellom tjenester for å lettere kunne analysere systemets relasjoner.
 
 ## Overordnet beskrivelse
-Vi kommer ikke til å generere fullstendige data for diagrammer i denne oppgaven. 
-Vi teller vektorer og skriver de ut på formatet
+I denne oppgaven vil vi ikke generere fullstendige data for relasjonsdiagrammer. I stedet vil vi fokusere på å telle og logge vektorer som viser interaksjoner mellom tjenester i følgende format:
 ```
 IdMappingService->CustomerService -> 5
 ```
 
 ## MetricService
-Kopier inn kafka streams koden fra oppgavre 2c. Men kall den MetricService, og pass på at den går mot rapid-topic
+Kopier Kafka Streams-koden fra Oppgave 2c, gi den navnet MetricService, og sikre at den bruker rapid-topicet 'rapid-1'.
 
-### Kjør den nye klassen
-Sjekk at den teller ord på rapid
+### Kjør MetricService
+Start tjenesten og verifiser at den teller ord i Rapid-emnet.
 
 ### Lag en vectorCounter, og bruk den i steden for ordteller:
 ```kotlin
@@ -45,19 +44,20 @@ val vectorCounter: ValueMapper<String, Iterable<String>> = ValueMapper { value -
 ```
 
 ### Enhetstest
-Finn testen, aktiver den og se at den kjører grønt
+Finn den relevante testen, aktiver den, og se til at den går grønt.
 
 ### Kjør MetricService mot rapid
-Start MetricService. Kjør samme scenarie som i 4d, der du sender en melding via NewProductsMessageProducer, og meldingen går gjennom alle de andre tjenestene.
+Start MetricService.
+Kjør scenariet som beskrevet i Oppgave 4d, 
+der en melding sendes via NewProductsMessageProducer og går gjennom alle de andre tjenestene.
+
 ## Forventet output fra MetricService
-
-
+````
 vector: NewProductsMessageProducer->IdMappingService -> <Antall>
 vector: IdMappingService->CustomerService -> <Antall>
+``
 
-Kjør NewProductsMessageProduct en gang til.
-
-Sjekk at vektorantallene øker med 1.
+Kjør NewProductsMessageProducer en gang til og verifiser at vektortellingen øker med 1.
 
 
 

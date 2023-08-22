@@ -25,7 +25,7 @@ Skal ikke ha: ```kotlin incomingMessage["processed"]?.booleanValue() == true```
 ### Kjør enhetstest
 Sjekk at den nå går grønt
 
-## Kjør opp Customerservice mot rapid
+## Kjør Customerservice mot rapid
 Start CustomerService kjører
 Pass på at MessageLoggerservice og IdMappingService kjører
 Vent til alle tre har beskjeden: "Successfully joined group"
@@ -33,11 +33,8 @@ Kjør NewProductsMessageProducer for å legge ut en melding.
 
 ## Forventet output i MessageLoggerService
 
-### Forventet output fra NewProductsMessageProducer
-Samme melding som i oppgave 4b
-
-### Forventet output fra IdMappingService
-Samme melding som i oppgave 4c
+### Forventet output fra NewProductsMessageProducer og IdMappingService
+Samme meldinger som tidligere
 
 ### Forventet output fra Customerservice
 ```json

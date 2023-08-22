@@ -41,7 +41,9 @@ Start MessageLoggerService via main funksjonen i klassen,
 Vent på meldingen "Successfully joined group" i loggen.
 Send en melding til rapid-1 ved å kjøre main funkjsonen i NewProductsMessageProducer
 
-## Forventet output fra MessageLoggerService
+## Forventet output
+
+### Forventet output fra NewProductsMessageProducer i MessageLoggerService
 ```json
 {
   "eventName": "SampleEvent",
@@ -59,8 +61,6 @@ Send en melding til rapid-1 ved å kjøre main funkjsonen i NewProductsMessagePr
   ]
 }
 ```
-
-### Melding fra NewProductsMessageProducer
 
 
 

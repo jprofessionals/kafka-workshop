@@ -13,6 +13,7 @@ Feltet skal legges på samme nivå som productExternalId
 
 ### Kodeskjelett og test
 Lag main-funksjon, opprett klassen, og kjør test, på samme måte som for MessageLoggerService. Testen vil feile siden en del kode mangler.
+Pass på at du sender inn annen consumerGroupId enn i forrige oppgave, ellers vil komponentene fordele meldinger mellom seg.
 
 ### ShouldProcessMessage
 Denne koden kjøres to ganger. Først på meldingen som kommer inn fra rapid for å finne ut om den skal behandles.

@@ -19,7 +19,10 @@ fun main() {
         ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
         ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
         ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
-        ConsumerConfig.GROUP_ID_CONFIG to "kotlinConsumer-1"
+        ConsumerConfig.GROUP_ID_CONFIG to "kotlinConsumer-1",
+        ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG to "6000",
+        ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG to "6000",
+        ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG to "1000"
     )
 
     KafkaConsumer<String, String>(consumerProps).use { consumer ->

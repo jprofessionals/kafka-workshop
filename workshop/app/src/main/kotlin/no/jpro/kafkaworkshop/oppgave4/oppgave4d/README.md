@@ -12,7 +12,8 @@ Lage en komponent som tar i mot medlingen fra IdMappingService fra oppgave 4b.
 ## CustomerService
 
 ### Kodeskjelett og test
-Hent inspirasjon fra tidligere oppgaver for å sette opp initielt skjelett og kjøre feilende test.
+Hent inspirasjon fra tidligere oppgaver for å sette opp initielt skjelett og kjøre feilende test. 
+Husk å bruke ny consumerGroupId.
 
 ### Entry kriteria 
 Skal ha: ```kotlin incomingMessage["product"]?.isNotNull() ?: false```
@@ -26,7 +27,7 @@ Skal ikke ha: ```kotlin incomingMessage["processed"]?.booleanValue() == true```
 Sjekk at den nå går grønt
 
 ## Kjør Customerservice mot rapid
-Start CustomerService kjører
+Start CustomerService
 Pass på at MessageLoggerservice og IdMappingService kjører
 Vent til alle tre har beskjeden: "Successfully joined group"
 Kjør NewProductsMessageProducer for å legge ut en melding.

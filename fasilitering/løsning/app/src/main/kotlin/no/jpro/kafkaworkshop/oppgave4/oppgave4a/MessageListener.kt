@@ -32,7 +32,10 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
         ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
         ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
         ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
-        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to isAutoCommitEnabled
+        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to isAutoCommitEnabled,
+        ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG to "6000",
+        ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG to "6000",
+        ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG to "1000"
     )
 
     /**

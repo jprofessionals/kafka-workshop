@@ -1,3 +1,4 @@
+```text
 12:45 - 13:15: Styrets hjørne
 13:15 - 14:05: Introduksjon til Kafka & Oppgave 1 (Presentert av Dejan)
 14:05 - 14:15: Pause
@@ -6,3 +7,4 @@
 15:15 - 15:25: Pause
 15:25 - 16:10: Kafka Avro Presentasjon & Oppgave 3 (Presentert av Frode)
 16:10 - 17:00: Rapids & Rivers Presentasjon & Oppgave 4 (Presentert av Joar)
+```

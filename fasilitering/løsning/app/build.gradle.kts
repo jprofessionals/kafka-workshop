@@ -2,6 +2,7 @@ plugins {
     java
     kotlin("jvm") version "1.8.20"
     id("com.github.davidmc24.gradle.plugin.avro") version "1.8.0"
+    id("com.github.imflog.kafka-schema-registry-gradle-plugin") version "1.11.1"
 }
 
 group = "no.jpro.kafkaworkshop"
@@ -10,6 +11,13 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://packages.confluent.io/maven/")
+}
+
+buildscript {
+    repositories {
+        maven("https://packages.confluent.io/maven/")
+        maven("https://jitpack.io")
+    }
 }
 
 dependencies {
@@ -39,5 +47,20 @@ tasks.test {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = "17"
+    }
+}
+
+schemaRegistry {
+    url = "http://localhost:8081"
+    register {
+        // merk at "app/" kommer foran, selv om dette skriptet ligger i den katalogen
+        subject("C-type", "app/src/main/avro/oppgave3-uniondemo/C.avsc", "AVRO")
+        subject("A-type", "app/src/main/avro/oppgave3-uniondemo/A.avsc", "AVRO")
+            .addReference("no.jpro.kafkaworkshop.oppgave3union.C", "C-type")
+        subject("B-type", "app/src/main/avro/oppgave3-uniondemo/B.avsc", "AVRO")
+            .addReference("no.jpro.kafkaworkshop.oppgave3union.C", "C-type")
+        subject("uniondemo-value", "app/src/main/avro/oppgave3-uniondemo/union.avsc", "AVRO")
+            .addReference("no.jpro.kafkaworkshop.oppgave3union.A", "A-type")
+            .addReference("no.jpro.kafkaworkshop.oppgave3union.B", "B-type")
     }
 }

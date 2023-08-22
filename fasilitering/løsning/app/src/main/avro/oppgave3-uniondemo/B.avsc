@@ -1,0 +1,15 @@
+{
+  "namespace": "no.jpro.kafkaworkshop.oppgave3union",
+  "type": "record",
+  "name": "B",
+  "fields": [
+    {
+      "name": "b",
+      "type": "string"
+    },
+    {
+      "name": "c",
+      "type": "C"
+    }
+  ]
+}

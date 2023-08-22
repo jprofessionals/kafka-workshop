@@ -7,6 +7,8 @@ Vi genererer en Java-klasse fra Avro-skjemaet.
 Til dette bruker vi et Gradle-plugin med usikker fremtid.
 Confluent tilbyr offisielt Maven-plugin, så Maven kan være et tryggere valg.
 
+[Lenke til presentasjon](https://docs.google.com/presentation/d/1bs0tBy_auDlA9_7qU9Lx8UKv8s2jBDOLT-j6664Jfa8/edit?usp=sharing).
+
 ## Forberedelser
 
 Det kan ta tid å laste ned images og biblioteker.
@@ -159,3 +161,4 @@ så lenge man kun har ett skjema per topic.
 * [Gradle Avro Plugin](https://github.com/davidmc24/gradle-avro-plugin) - fare for å bli arkivert!
 * [Schema Registry Maven Plugin](https://docs.confluent.io/platform/current/schema-registry/develop/maven-plugin.html)
 * [Schema-registry-plugin (Gradle)](https://github.com/ImFlog/schema-registry-plugin)
+* [Putting Several Event Types in the Same Topic - Revisited](https://www.confluent.io/blog/multiple-event-types-in-the-same-kafka-topic/)

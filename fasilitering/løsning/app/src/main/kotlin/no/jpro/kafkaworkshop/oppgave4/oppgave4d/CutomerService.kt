@@ -3,6 +3,7 @@ import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.isNotNull
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageListener
 
 fun main() {
     CustomerService().listen("CustomerService-listener-1")

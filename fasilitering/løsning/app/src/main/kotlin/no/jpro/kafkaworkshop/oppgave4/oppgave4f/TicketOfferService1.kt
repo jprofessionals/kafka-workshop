@@ -1,6 +1,6 @@
 package no.jpro.kafkaworkshop.oppgave4.oppgave4f
 
-import MessageListener
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageListener
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
 
 fun main() {

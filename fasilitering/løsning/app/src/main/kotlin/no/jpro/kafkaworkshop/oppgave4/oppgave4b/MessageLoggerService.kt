@@ -1,8 +1,9 @@
 package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
-import MessageListener
+
 import no.jpro.kafkaworkshop.logger
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageListener
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
 
 fun main() {
@@ -12,7 +13,7 @@ fun main() {
 /**
  * The `MessageLoggerService` listens to messages and logs their content.
  */
-open class MessageLoggerService : MessageListener() {
+    open class MessageLoggerService : MessageListener() {
 
     /**
      * Logs the content of the original message.

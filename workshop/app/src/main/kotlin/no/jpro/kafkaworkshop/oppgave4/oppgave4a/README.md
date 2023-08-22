@@ -1,5 +1,10 @@
 # Oppgave 4a Gå gjennom hjelpefiler for Kafka Rapids & Rivers
 
+## Formål
+Få en oversikt over felleskode som brukes for å sende og produsere meldinger til rapid.
+Bli kjent med ting man trenger å tenke på når man skriver og leser fra samme topic.
+
+## Overordnet beskrivelse
 I denne mappen finner du fire filer som kan brukes til å lage Kafka Rapids & Rivers komponenter.
 Filene skal gjøre det enkelt å opprette producere og konsumere mot en rapid. Gjør deg kjent med koden,
 slik at du er klar for å lage applikasjoner som jobber mot rapiden i de resterende oppgavene i oppgave4.

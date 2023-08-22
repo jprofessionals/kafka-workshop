@@ -35,6 +35,6 @@ tasks.test {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = "18"
+        jvmTarget = "17"
     }
 }

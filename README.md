@@ -7,7 +7,7 @@ Et utviklingsmiljø som støtter nyere versjoner av Gradle, Java, og Kotlin
 Sjekk at build.gradle.kts refererer til en Java-versjon du har installert. For øyeblikket er det satt til:
 ```kotlin
     kotlinOptions {
-        jvmTarget = "18"
+        jvmTarget = "17"
     }
 ```
 Hvis du bruker en annen versjon av java, kan du endre versjon i konfigurasjonsfilen.

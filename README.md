@@ -1,7 +1,7 @@
 # Kafka Workshop for Jprofessionals
 
 ## Forutsetninger
-Et utviklingsmiljø som støtter nyere versjoner av Gradle, Java, og Kotlin
+Et utviklingsmiljø som støtter nyere versjoner av Gradle, Java, Kotlin, Docker og Docker Compose
 
 ## Når du har klonet prosjektet
 Sjekk at build.gradle.kts refererer til en Java-versjon du har installert. For øyeblikket er det satt til:

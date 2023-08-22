@@ -9,7 +9,7 @@ Meldingen har 'productExternalId'. Vi skal mappen veriden til et nytt felt produ
 Feltet skal legges på samme nivå som productExternalId
 
 
-## IdMappingServive
+## IdMappingServivce
 
 ### Kodeskjelett og test
 Lag main-funksjon, opprett klassen, og kjør test, på samme måte som for MessageLoggerService. Testen vil feile siden en del kode mangler.
@@ -49,32 +49,16 @@ Sjekk at den nå går grønt
 ## Kjør opp IdMappingSevice mot rapid
 Start IdMappingService.
 Pass på at MessageLoggerService kjører.
-Vent til begge gir beskjeden: "Successfully joined group"
+Vent til begge har beskjeden: "Successfully joined group"
 Kjør NewProductsMessageProducer for å legge ut en melding.
 
-## Forventet output
+## Forventet output i MessageLoggerService
 
-### Forventet output fra NewProductsMessageProducer i MessageLoggerService
-```json
-{
-  "eventName": "SampleEvent",
-  "payload": {
-    "productExternalId": "12",
-    "product": {
-      "name": "car",
-      "color": "red"
-    }
-  },
-  "participatingSystems": [
-    {
-      "applicationName": "NewProductsMessageProducer"
-    }
-  ]
-}
-```
+### Forventet output fra NewProductsMessageProducer
+Samme melding som i oppgave 4b
 
 
-### Forventet output fra IdMappingService i MessageLoggerService
+### Forventet output fra IdMappingService
 ```json
 {
   "eventName": "SampleEvent",

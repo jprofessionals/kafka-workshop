@@ -12,9 +12,16 @@ import java.util.*
 import java.util.regex.Pattern
 
 fun main() {
-    val logger = LoggerFactory.getLogger("no.jpro.kafkaworkshop.streams")
+    WordCountService().start()
+}
 
-    val inputTopic = "first_topic"
+class WordCountService {
 
-    // TODO: Oppgave 2c
+    fun start() {
+        val inputTopic = "first_topic"
+
+        // TODO: Oppgave 2c
+    }
+
+
 }

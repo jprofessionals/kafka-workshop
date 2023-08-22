@@ -35,13 +35,14 @@ val builder = StreamsBuilder()
 val textLines: KStream<String, String> = builder.stream(inputTopic)
 ```
 
+## Lag 
+
 ## Tell antall forekomster av et ord og logg antallet
 Hvis et ord forekommer flere ganger i en melding, skal det telles hver gang.
  ```kotlin
  val pattern = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS)
 
-val wordCounts: KTable<String, Long> = textLines
-    .flatMapValues { value -> pattern.split(value.lowercase(Locale.getDefault())).asIterable() }
+val wordCounts: KTable<String, Long> = textLines.flatMapValues(splitWords)
     .groupBy { _, word -> word }
     .count()
 
@@ -63,4 +64,13 @@ Runtime.getRuntime().addShutdownHook(Thread {
     streams.close()
     logger.info("stop")
 })
+```
+
+## Lag en funksjon for å gjøre tellingen av ord.
+Legg den utenfor start() metoden.
+```kotlin
+    val splitWords: (String) -> Iterable<String> = { value ->
+        val pattern = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS)
+        pattern.split(value.lowercase(Locale.getDefault())).asIterable()
+    }
 ```

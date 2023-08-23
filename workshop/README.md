@@ -1,18 +1,14 @@
 # Kafka Workshop for Jprofessionals
 
 ## Forutsetninger
-Et utviklingsmiljø som støtter nyere versjoner av Gradle, Java, og Kotlin
 
-## Når du har klonet prosjektet
-Sjekk at build.gradle.kts refererer til en Java-versjon du har installert. For øyeblikket er det satt til:
-```kotlin
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-```
-Hvis du bruker en annen versjon av java, kan du endre versjon i konfigurasjonsfilen.
+Et utviklingsmiljø som støtter nyere versjoner av Gradle, Java, og Kotlin. Vi anbefaler IntelliJ, eventuelt Community Edition om du ikke har lisens.
+Docker + docker desktop(windows/mac)
+Vi bruker docker-compose(Følger med docker desktop)
+Vi bruker java 17.
 
 ## Veiledning for deltakere
+
 - Åpne workshop-mappen i ditt foretrukne utviklingsmiljø. Vi anbefaler IntelliJ, da workshopen er designet med dette i tankene.
 - Pass på at prosjektet bygger ved hjelp av Gradle-oppsettet inkludert i prosjektet.
 - Start med å lese dette: app/src/main/kotlin/kafkaworkshop/oppgave1/README.md.

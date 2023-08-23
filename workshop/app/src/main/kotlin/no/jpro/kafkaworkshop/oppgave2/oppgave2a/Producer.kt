@@ -14,5 +14,6 @@ object Common {
 }
 
 fun main() {
+    val logger = LoggerFactory.getLogger("com.jpro.kafkaworkshop.producer")
     // TODO: Resten av koden for oppgave 2a skal være her
 }

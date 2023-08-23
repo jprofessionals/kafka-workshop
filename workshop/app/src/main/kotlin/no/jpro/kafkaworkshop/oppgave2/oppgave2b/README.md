@@ -13,7 +13,7 @@ val jacksonObjectMapper = jacksonObjectMapper()
 ```
 
 ## Definer konfigurasjonen for vår Kafka consumer
-Inkluder informasjon om hvor Kafka-serveren kjører og hvordan meldingsnøklene og verdiene skal deserialiseres.
+I main funksjonen, inkluder informasjon om hvor Kafka-serveren kjører og hvordan meldingsnøklene og verdiene skal deserialiseres.
 Legg til en groupid som identifiserer consumergruppen. Hvis denne applikasjonen kjørte i et cluster sammen med andre noder med samme groupid, ville meldingene blitt fordelt mellom consumernodene.
 Som i oppgave 1, velger vi "earliest" som konfigurasjon, slik at vi starter fra begynnelsen av topicen første gang denne klienten kjører.
 ```kotlin

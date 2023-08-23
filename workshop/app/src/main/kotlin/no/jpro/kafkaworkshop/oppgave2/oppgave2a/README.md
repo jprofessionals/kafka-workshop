@@ -7,7 +7,7 @@ Filen inneholder skjelettet for å kjøre en producer mot et Kafka topic. Det er
 Dette er et objekt som inneholder topicnavn og et objekt som representerer meldingene som skal produseres. 
 Det skal senere kunne gjenbrukes av consumer i neste oppgave, så det plasseres utenfor main-metoden. 
 Vi bruker her samme topic som ble satt opp i oppgave 1.
-Pass på at consumer fra oppgave 1 fortsatt kjører.
+Pass på at consumer fra oppgave 1 fortsatt kjører mot first_topic.
 ```kotlin
 object Common {
     const val topic = "first_topic"
@@ -15,8 +15,9 @@ object Common {
 }
 ```
 
+
 ## Definer konfigurasjonen for vår Kafka producer
-Inkluder hvor Kafka-serveren kjører, og hvordan meldingsnøklene og verdiene skal serialiseres.
+I main funksjonen, Inkluder hvor Kafka-serveren kjører, og hvordan meldingsnøklene og verdiene skal serialiseres.
 ```kotlin
 val producerProperties = mapOf<String, Any>(
     ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to "localhost:9092",
@@ -37,7 +38,7 @@ KafkaProducer<String, String>(producerProperties).use { producer ->
 ```kotlin
 val message = Common.Message(id = "1", value = "a value")
 val jsonMessage: String = jacksonObjectMapper().writeValueAsString(message)
-val record = ProducerRecord(topic, "key", jsonMessage)
+val record = ProducerRecord(Common.topic, "key", jsonMessage)
 ```
 
 ## Send meldingen

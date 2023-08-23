@@ -18,10 +18,7 @@ fun main() {
 class WordCountService {
 
     fun start() {
-        val inputTopic = "first_topic"
-
-        // TODO: Oppgave 2c
+        val logger = LoggerFactory.getLogger("no.jpro.kafkaworkshop.streams")
     }
-
 
 }

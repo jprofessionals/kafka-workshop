@@ -1,4 +1,4 @@
-package no.jpro.kafkaworkshop.oppgave4.oppgave4b
+/*package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
 
 import no.jpro.kafkaworkshop.logger
@@ -15,15 +15,8 @@ fun main() {
  */
 open class MessageLoggerService : MessageListener() {
     // TODO: Insert override methods from MessageListener and implement the methods.
-    // This seervice should pick all messages from the rapid
+    // This service should pick all messages from the rapid
     // Make sure no confirmation mesage is sent to the rapid topic.
     // Use logger().info(...) to write the message to the log.
-    override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
-        return true
-    }
 
-    override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
-        return null
-    }
-
-}
+}*/

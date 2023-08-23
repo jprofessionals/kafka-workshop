@@ -1,4 +1,4 @@
-/*import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
@@ -57,5 +57,4 @@ class TicketOfferService2Test {
         assertThat(processedMessage!!.payload["ticketOffer"]?.numberValue()).isEqualTo(25)
     }
 }
-*/
 

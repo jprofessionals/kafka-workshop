@@ -1,4 +1,4 @@
-/*import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
 import no.jpro.kafkaworkshop.oppgave4.oppgave4f.TicketOfferService1
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -54,4 +54,4 @@ class TicketOfferService1Test {
         val processedMessage = ticketOfferService1.processMessage(originalMessage)
         assertThat(processedMessage!!.payload["ticketOffer"]?.numberValue()).isEqualTo(22)
     }
-}*/
+}

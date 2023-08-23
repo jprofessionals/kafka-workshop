@@ -2,6 +2,7 @@
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
+import no.jpro.kafkaworkshop.oppgave4.oppgave4c.IdMappingService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,7 +20,7 @@ class IdMappingServiceTest {
             return super.shouldProcessMessage(incomingMessage)
         }
 
-        public override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        public override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
             return super.processMessage(originalMessage)
         }
     }
@@ -76,7 +77,7 @@ class IdMappingServiceTest {
         )
 
         val processedMessage = idMappingService.processMessage(testData)
-        assertThat(processedMessage.payload["productInternalId"]?.asText()).isEqualTo("A14")
+        assertThat(processedMessage!!.payload["productInternalId"]?.asText()).isEqualTo("A14")
     }
 
     @Test
@@ -88,9 +89,8 @@ class IdMappingServiceTest {
         )
 
         val processedMessage = idMappingService.processMessage(testData)
-        assertThat(processedMessage.payload["productInternalId"]).isNull()
+        assertThat(processedMessage!!.payload["productInternalId"]).isNull()
     }
 
 
-}
- */
+}*/

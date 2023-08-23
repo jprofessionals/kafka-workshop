@@ -2,6 +2,7 @@
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration.Companion.messageNodeFactory
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
+import no.jpro.kafkaworkshop.oppgave4.oppgave4d.CustomerService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,7 +20,7 @@ class CustomerServiceTest {
             return super.shouldProcessMessage(incomingMessage)
         }
 
-        public override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        public override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
             return super.processMessage(originalMessage)
         }
     }
@@ -89,8 +90,8 @@ class CustomerServiceTest {
         )
 
         val processedMessage = customerService.processMessage(testData)
-        assertThat(processedMessage.payload["processed"]?.booleanValue()).isTrue
+        assertThat(processedMessage!!.payload["processed"]?.booleanValue()).isTrue
     }
 
-}
- */
+}*/
+

@@ -10,7 +10,7 @@ IdMappingService->CustomerService -> 5
 ```
 
 ## MetricService
-Kopier Kafka Streams-koden fra Oppgave 2c, gi den navnet MetricService, og sikre at den bruker rapid-topicet 'rapid-1'.
+Kopier Kafka Streams-koden fra Oppgave 2c, gi den navnet MetricService, og sikre at den bruker rapid-topicet.
 
 ### Kjør MetricService
 Start tjenesten og verifiser at den teller ord i Rapid-emnet.

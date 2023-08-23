@@ -18,7 +18,7 @@ class TicketOfferService2Test {
             return super.shouldProcessMessage(incomingMessage)
         }
 
-        public override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        public override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
             return super.processMessage(originalMessage)
         }
     }
@@ -54,6 +54,6 @@ class TicketOfferService2Test {
             )
         )
         val processedMessage = ticketOfferService2.processMessage(originalMessage)
-        assertThat(processedMessage.payload["ticketOffer"]?.numberValue()).isEqualTo(25)
+        assertThat(processedMessage!!.payload["ticketOffer"]?.numberValue()).isEqualTo(25)
     }
 }

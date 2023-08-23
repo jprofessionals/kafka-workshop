@@ -21,14 +21,6 @@ import java.time.Duration
 abstract class MessageListener(private val messageProducer: MessageProducer = MessageProducer()) {
 
     /**
-     * Checks whether the provided [incomingMessage] should be processed.
-     *
-     * @param incomingMessage The message data to check.
-     * @return `true` if the message should be processed, `false` otherwise.
-     */
-    protected abstract fun shouldProcessMessage(incomingMessage: Payload): Boolean
-
-    /**
      * Sets the properties for Kafka consumer.
      *
      * @param consumerGroupId The consumer group ID for the consumer.
@@ -40,7 +32,10 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
         ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
         ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
         ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java.name,
-        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to isAutoCommitEnabled
+        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to isAutoCommitEnabled,
+        ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG to "6000",
+        ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG to "6000",
+        ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG to "1000"
     )
 
     /**
@@ -65,7 +60,6 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
         shouldProcess: (Payload) -> Boolean,
         processRecord: (ConsumerRecord<String, String>, KafkaConsumer<String, String>) -> Unit
     ) {
-        logger().info("consumeMessages")
         KafkaConsumer<String, String>(consumerProperties(consumerGroupId)).use { consumer ->
             consumer.subscribe(listOf(RapidConfiguration.topic))
             while (true) {
@@ -109,6 +103,14 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
             logger().error("Exception while processing message: ${e.message}")
         }
     }
+
+    /**
+     * Checks whether the provided [incomingMessage] should be processed.
+     *
+     * @param incomingMessage The message data to check.
+     * @return `true` if the message should be processed, `false` otherwise.
+     */
+    protected abstract fun shouldProcessMessage(incomingMessage: Payload): Boolean
 
     /**
      * Processes the [originalMessage] and returns a new message or null if no new message is created.

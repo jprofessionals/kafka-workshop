@@ -19,7 +19,7 @@ class CustomerServiceTest {
             return super.shouldProcessMessage(incomingMessage)
         }
 
-        public override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        public override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
             return super.processMessage(originalMessage)
         }
     }
@@ -89,6 +89,6 @@ class CustomerServiceTest {
         )
 
         val processedMessage = customerService.processMessage(testData)
-        assertThat(processedMessage.payload["processed"]?.booleanValue()).isTrue
+        assertThat(processedMessage!!.payload["processed"]?.booleanValue()).isTrue
     }
 }

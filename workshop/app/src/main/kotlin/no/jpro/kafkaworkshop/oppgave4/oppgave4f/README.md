@@ -11,9 +11,13 @@ Om det er lite tid igjen i workshopen, kan du hente inn 'TicketOfficeService' fr
 
 ## TicketOfficeService
 Opprett en ny klasse kalt TicketOfficeService.
-Inspirasjon for oppsettet kan hentes fra NewProductsMessageProducer og de ulike lytterklassene.
+Inspirasjon for oppsettet kan hentes fra NewProductsMessageProducer og lytterklassene.
+Du trenger både å implementere lyttermetoder, og ha en start metode for å produsere need. Det blir to kall fra main metoden.
 Klassen skal sende en startmelding og også initiere en lytter for å motta svar.
 Legg til en kvitteringsmelding i meldingsflyten, likt som i CustomerService.
+Se på forventet json for format på meldingene.
+
+I TicketOfficeService, hent ut alle 'ticketOffer', og logg de til infologgen.
 
 ## Enhetstesting
 Aktiver den tilhørende enhetstesten for TicketOfficeService.

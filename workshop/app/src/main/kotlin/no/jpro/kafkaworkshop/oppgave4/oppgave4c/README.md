@@ -13,6 +13,8 @@ Dette nye feltet skal eksistere på samme nivå i json som 'productExternalId'.
 ### Oppsett av Kodebase og Tester
 Opprett en main-funksjon og klassestruktur for IdMappingService, lik den du lagde for MessageLoggerService. Siden deler av koden mangler, vil den innledende testen feile. 
 Husk å bruke en annen consumerGroupId enn i forrige oppgave for å unngå konflikter i meldingsfordeling.
+Du må denne gangen sende inn en messageProducer i konstruktøren, siden vi også skal sende en melding.
+IdMappingService(messageProducer: MessageProducer = MessageProducer())
 
 ### ShouldProcessMessage funksjonen
 Denne metoden kjøres to ganger: først på den innkommende meldingen fra Rapid for å avgjøre om den skal behandles, og deretter på den nyproduserte meldingen for å forhindre uønskede løkker. 
@@ -37,7 +39,7 @@ Metoden skal mappe 'productExternalId' til 'productInternalId' og returnere den 
 
         return originalMessage.copyWithAdditionalData(
             this::class.simpleName!!,
-            mapOf("productInternalId" to messageNodeFactory.textNode(internalId))
+            mapOf("productInternalId" to RapidConfiguration.messageNodeFactory.textNode(internalId))
         )
 ```
 

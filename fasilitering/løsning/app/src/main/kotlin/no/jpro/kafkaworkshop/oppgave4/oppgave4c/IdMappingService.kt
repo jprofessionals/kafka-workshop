@@ -44,23 +44,13 @@ open class IdMappingService(messageProducer: MessageProducer = MessageProducer()
      * @param originalMessage The original message to be processed.
      * @return The processed message with additional data if an internal product ID is added.
      */
-    override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+    override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
         val externalId = originalMessage.payload["productExternalId"]?.asText()
-        val internalId = mapExternalIdToInternal(externalId)
+        val internalId = ID_MAP[externalId]
 
         return originalMessage.copyWithAdditionalData(
             this::class.simpleName!!,
             mapOf("productInternalId" to messageNodeFactory.textNode(internalId))
         )
-    }
-
-    /**
-     * Maps an external product ID to an internal one using a predefined mapping.
-     *
-     * @param externalId The external product ID.
-     * @return The corresponding internal product ID, or `null` if not found.
-     */
-    private fun mapExternalIdToInternal(externalId: String?): String? {
-        return ID_MAP[externalId]
     }
 }

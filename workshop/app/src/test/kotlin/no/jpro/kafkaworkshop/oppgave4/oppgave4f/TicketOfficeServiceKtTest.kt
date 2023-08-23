@@ -22,7 +22,7 @@ class TicketOfficeServiceTest {
             return super.shouldProcessMessage(incomingMessage)
         }
 
-        public override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+        public override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
             return super.processMessage(originalMessage)
         }
     }
@@ -74,7 +74,6 @@ class TicketOfficeServiceTest {
             )
         )
         val processedMessage = ticketOfficeService.processMessage(originalMessage)
-        assertThat(processedMessage.payload["processed"]?.booleanValue()).isTrue
+        assertThat(processedMessage!!.payload["processed"]?.booleanValue()).isTrue
     }
-}
- */
+}*/

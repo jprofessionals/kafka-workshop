@@ -37,7 +37,7 @@ open class CustomerService(messageProducer: MessageProducer = MessageProducer())
      * @param originalMessage The original message to be processed.
      * @return A new message with additional data indicating it has been processed.
      */
-    override fun processMessage(originalMessage: RapidMessage): RapidMessage {
+    override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
         val additionalData = mapOf("processed" to messageNodeFactory.booleanNode(true))
         return originalMessage.copyWithAdditionalData(this::class.simpleName!!, additionalData)
     }

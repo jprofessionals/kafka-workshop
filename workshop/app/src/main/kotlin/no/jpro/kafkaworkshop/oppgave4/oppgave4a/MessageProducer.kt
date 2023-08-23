@@ -46,7 +46,6 @@ class MessageProducer {
 
                 logger().info("Sending message $jsonMessage")
                 producer.send(record)
-                logger().info("Message has been sent")
 
             } catch (e: Exception) {
                 logger().error("Error sending message $rapidMessage", e)

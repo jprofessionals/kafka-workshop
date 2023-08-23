@@ -5,8 +5,10 @@ import no.jpro.kafkaworkshop.logger
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
 
 fun main() {
-    TicketOfficeService().start()
-    TicketOfficeService().listen("TicketOfficeService-listener-1")
+    TicketOfficeService().apply {
+        start()
+        listen("TicketOfficeService-listener-1")
+    }
 }
 
 open class TicketOfficeService(private val messageProducer: MessageProducer = MessageProducer()) :
@@ -29,9 +31,8 @@ open class TicketOfficeService(private val messageProducer: MessageProducer = Me
         return ticketOffer && !alreadyProcessed
     }
 
-    override fun processMessage(originalMessage: RapidMessage): RapidMessage {
-        val offer = originalMessage.payload["ticketOffer"]?.asText()
-        logger().info("ticket offer received, offer: $offer")
+    override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
+
         val additionalData = mapOf("processed" to RapidConfiguration.messageNodeFactory.booleanNode(true))
         return originalMessage.copyWithAdditionalData(this::class.simpleName!!, additionalData)
     }

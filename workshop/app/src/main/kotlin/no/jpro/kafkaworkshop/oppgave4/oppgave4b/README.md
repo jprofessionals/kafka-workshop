@@ -23,7 +23,7 @@ Sørg for at NewProductsMessageProducerTest nå kjøres uten feil.
 
 ## MessageLoggerService
 
-### Etabler kodebase
+### Opprett klasse
 Kommenter inn koden for MessageLoggerService og generer nødvendige metoder som skal overrides.
 
 ### Forbered Enhetstesting
@@ -33,10 +33,9 @@ Finn enhetstesten for klassen, aktiver den, kjør testen og bekreft at den feile
 Fullfør alle "TODO"-merkede oppgaver i koden og bekreft at testen nå kjøres uten feil.
 
 
-## Test Komponentene mot Rapid-emnet
-Start MessageLoggerService ved å kjøre dens main-funksjon.
-Vent på loggmeldingen "Successfully joined group."
-Send en testmelding til "rapid-1" ved å kjøre main-funksjonen i NewProductsMessageProducer.
+## Test Komponentene mot rapid-topic
+Start MessageLoggerService ved å kjøre  main-funksjonen.
+Send en testmelding til rapid ved å kjøre main-funksjonen i NewProductsMessageProducer.
 
 ## Forventet resultat i MessageLoggerService
 

@@ -20,7 +20,7 @@ Meldingen må ha en intern produkt-ID: ```kotlin incomingMessage["productInterna
 Meldingen må ikke allerede være behandlet: ```kotlin incomingMessage["processed"]?.booleanValue() != true```
 
 ### Tilleggsdata for ny melding(kvittering til rapid)
-```kotlin mapOf("processed" to messageNodeFactory.booleanNode(true))```
+```kotlin mapOf("processed" to RapidConfiguration.messageNodeFactory.booleanNode(true))```
 
 ### Utfør Enhetstest
 Kjør enhetstesten for CustomerService og bekreft at den nå går grønt.

@@ -22,7 +22,7 @@ class RapidConfiguration {
 
     companion object {
 
-        /** The topic name used for  messages. */
+        /** The topic name used for Rapid messages. */
         const val topic: String = "rapid-1"
 
         /**

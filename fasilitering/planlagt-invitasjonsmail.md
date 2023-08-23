@@ -2,10 +2,9 @@ Nå er det ikke lenge til fagdag! Dette blir en workshop, så husk å ta med en 
 
 Dette bør du ha klart før fagdagen:
 
-- Et utviklingsmiljø som støtter nyere versjoner av Gradle, Java, og Kotlin. Vi anbefaler IntelliJ, eventuelt Community Edition om du ikke har lisens.
+- Et utviklingsmiljø som støtter Gradle, Kotlin og Java 17. Vi anbefaler IntelliJ, eventuelt Community Edition om du ikke har lisens.
 - Docker + docker desktop(windows/mac)
 - docker-compose(Følger med docker desktop)
-- Java 17
 
 Sjekk ut git-repo https://github.com/jprofessionals/kafka-workshop, og sjekk at du får åpnet prosjektet under /workshop i IDEen din.
 Sjekk ut git-repo https://github.com/codingharbour/kafka-docker-compose.git
@@ -26,4 +25,4 @@ Tidsplan for dagen er ca. som følger:
 Vi sees på fagdagen!
 
 mvh fagdagskomiteen
-<Navn på de i fagkomiteen>
+<navn på de i fagkomiteen>

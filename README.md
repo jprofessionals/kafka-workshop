@@ -2,10 +2,9 @@
 
 ## Forutsetninger
 
-Et utviklingsmiljø som støtter nyere versjoner av Gradle, Java, og Kotlin. Vi anbefaler IntelliJ, eventuelt Community Edition om du ikke har lisens.
-Docker + docker desktop(windows/mac)
-docker-compose(Følger med docker desktop)
-Java 17
+- Et utviklingsmiljø som støtter Gradle, Kotlin og Java 17. Vi anbefaler IntelliJ, eventuelt Community Edition om du ikke har lisens.
+- Docker + docker desktop(windows/mac)
+- docker-compose(Følger med docker desktop)
 
 ## Veiledning for deltakere
 

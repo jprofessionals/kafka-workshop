@@ -28,6 +28,7 @@ Gå gjennom klassene, tenk gjennom hva de gjør, og se om du kan svare på følg
 
 ### Autocommit
 Hvis en melding feiler, vil applikasjonen da ignorere meldingen ved neste forsøk, eller vil den prøve å prosessere den på nytt?
+Om flagget for autocommit blir satt til false, vil koden sørge for at meldinger som feiler blir forsøkt plukket igjen? Er det noen mangler i koden for dette, eller ville det kunne fungere?
 
 ### Potensial for Evig Løkke
 Når en applikasjon både sender og lytter til det samme emnet, kan det oppstå en situasjon hvor applikasjonen hører på sin egen melding, resulterende i en evig løkke. 

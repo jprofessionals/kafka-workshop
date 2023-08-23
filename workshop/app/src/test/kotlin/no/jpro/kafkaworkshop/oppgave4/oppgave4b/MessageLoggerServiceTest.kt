@@ -1,4 +1,4 @@
-/*package no.jpro.kafkaworkshop.oppgave4.oppgave4b
+package no.jpro.kafkaworkshop.oppgave4.oppgave4b
 
 import com.fasterxml.jackson.databind.JsonNode
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
@@ -52,4 +52,3 @@ class MessageLoggerServiceTest {
     }
 
 }
- */

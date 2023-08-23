@@ -25,7 +25,7 @@ class NewProductsMessageProducer(private val messageProducer: MessageProducer = 
      * Produces a sample product message and sends it.
      */
     fun produceMessage() {
-        // TODO: create a sample mesasge using the sampledata in this class, and send it using messageProducer.
+        // TODO: create a sample messsage using the sampledata in this class, and send it using messageProducer.
     }
 
     /**

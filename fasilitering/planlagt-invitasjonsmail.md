@@ -2,7 +2,7 @@ Nå er det ikke lenge til fagdag! Dette blir en workshop, så husk å ta med en 
 
 Dette bør du ha klart før fagdagen:
 
-- Et utviklingsmiljø som støtter Gradle, Kotlin og Java 17. Vi anbefaler IntelliJ, eventuelt Community Edition om du ikke har lisens.
+- Et utviklingsmiljø som støtter Gradle, Kotlin og Java 17. Vi anbefaler IntelliJ, eventuelt Community Edition om du ikke har lisens. Sett opp java 17 sdk under project structure i intelliJ.
 - Docker + docker desktop(windows/mac)
 - docker-compose(Følger med docker desktop)
 

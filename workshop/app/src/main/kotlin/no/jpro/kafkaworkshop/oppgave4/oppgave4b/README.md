@@ -24,10 +24,10 @@ Sørg for at NewProductsMessageProducerTest nå kjøres uten feil.
 ## MessageLoggerService
 
 ### Etabler kodebase
-Aktiver koden for MessageLoggerService og generer nødvendige metoder som skal overrides.
+Kommenter inn koden for MessageLoggerService og generer nødvendige metoder som skal overrides.
 
 ### Forbered Enhetstesting
-Identifiser enhetstesten for klassen, aktiver den, kjør testen og bekreft at den feiler.
+Finn enhetstesten for klassen, aktiver den, kjør testen og bekreft at den feiler.
 
 ### Fullfør MessageLoggerService
 Fullfør alle "TODO"-merkede oppgaver i koden og bekreft at testen nå kjøres uten feil.

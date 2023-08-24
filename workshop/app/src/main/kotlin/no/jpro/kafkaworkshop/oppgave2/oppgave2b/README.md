@@ -73,5 +73,8 @@ Med vårt standard oppsett kan vi få opp til 500 meldinger om gangen.
 ## Start consumeren
 Du skal se følgende i loggen:
 ```Consumed record with key key and value {"id":"1","value":"a value"}```
+
+## Start producer en gang til 
+Verifiser at melding kommer en gang til.
     
 

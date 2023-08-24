@@ -5,7 +5,7 @@ Filen inneholder skjelettet for summering av antall ganger en melding tidligere 
 Vi skal benytte Kafka Streams for summeringen, og for å lagre tilstand mellom oppstarter, selv om meldingene ikke lenger finnes på topicet.
 
 ## Lag en funksjon for å gjøre tellingen av ord.
-Legg den utenfor start() metoden.
+Legg den utenfor main() funksjonen, og utenfor klassen.
 ```kotlin
     val splitWords: (String) -> Iterable<String> = { value ->
         val pattern = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS)
@@ -15,7 +15,7 @@ Legg den utenfor start() metoden.
 
 ## Vi bruker topic fra oppgave 1, first_topic
 Topicet inneholder allerede noe data. Det er også enkelt å legge til nye meldinger via CLI.
-Legg inn dette i start funksjonen
+Legg inn dette i start funksjonen i WordCountsService
 ```kotlin
     val inputTopic = "first_topic"
 ```

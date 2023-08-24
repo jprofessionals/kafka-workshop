@@ -10,12 +10,13 @@ IdMappingService->CustomerService -> 5
 ```
 
 ## MetricService
-Kopier Kafka Streams-koden fra Oppgave 2c, g gi den navnet MetricService. Bytt til å bruke rapid-topicet.
+Kopier koden fra oppgave 2c (kafka streams, gi klassen nytt navn: MetricService. Bytt til å bruke rapid topicet, 'rapid-1'.
 
 ### Kjør MetricService
 Start tjenesten og verifiser at den teller ord i rapid-topicet.
 
-### Lag en vectorCounter, og bruk den i steden for wordCounts:
+### Lag en vectorCounter
+Bruk den i steden for splitWords:
 ```kotlin
   /**
  * A ValueMapper function that reads a JSON string, extracts a
@@ -57,7 +58,7 @@ vector: NewProductsMessageProducer->IdMappingService -> <Antall>
 vector: IdMappingService->CustomerService -> <Antall>
 ``
 
-Kjør NewProductsMessageProducer en gang til og verifiser at vektortellingen øker med 1.
+Kjør NewProductsMessageProducer en gang til og verifiser at vektorantallet øker med 1.
 
 
 

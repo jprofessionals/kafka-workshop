@@ -102,7 +102,7 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
         } catch (e: Exception) {
             logger().error("Exception while processing message: ${e.stackTraceToString()}")
             // throw e // Should throw and stop the application in a production environment
-            // It is bettter to stop the application, fix the problem, and continue on the same message to ensure that no messages are lost
+            // It is better to stop the application, fix the problem, and continue with the same message to ensure that no messages are lost
         }
     }
 

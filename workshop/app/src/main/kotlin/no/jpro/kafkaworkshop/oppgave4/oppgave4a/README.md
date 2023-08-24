@@ -27,13 +27,13 @@ Dette er en abstrakt klasse som kan brukes for å lytte på meldinger i et Rapid
 Gå gjennom klassene, tenk gjennom hva de gjør, og se om du kan svare på følgende spørsmål
 
 ### Autocommit
-Hvis en melding feiler, vil applikasjonen da ignorere meldingen ved neste forsøk, eller vil den prøve å prosessere den på nytt?
-Om flagget for autocommit blir satt til false, vil koden sørge for at meldinger som feiler blir forsøkt plukket igjen? Er det noen mangler i koden for dette, eller ville det kunne fungere?
+Hvis en melding feiler, hopper applikasjonen videre til neste melding, eller vil den prøve å prosessere den på nytt?
+Om flagget for autocommit blir satt til false, vil koden sørge for at meldinger som feiler blir forsøkt plukket igjen? Er det noen mangler i koden for dette, eller ville det fungere?
 
 ### Potensial for Evig Løkke
-Når en applikasjon både sender og lytter til det samme emnet, kan det oppstå en situasjon hvor applikasjonen hører på sin egen melding, resulterende i en evig løkke. 
-Finnes det også andre scenarier for evig løkke som involverer flere applikasjoner som bruker det samme Rapid-emnet? 
-Hvilke sikkerhetsmekanismer har disse filene for å forhindre slike evige løkker?
+Når en applikasjon både sender og lytter til det samme topicet, kan det oppstå en situasjon hvor applikasjonen lytter på sin egen melding, som resulterer i en evig løkke. 
+Finnes det også andre scenarier for evig løkke, som involverer flere servicer? 
+Hvilke sikkerhetsmekanismer har felleskoden for å forhindre slike evige løkker?
 
 ### Dataformat i Rapid topic
-Hvilke metadatafelter er inkludert i meldingene som sendes i Rapid-emnet, og hva er deres potensielle anvendelser?
+Hvilke metadatafelter er inkludert i meldingene som sendes i Rapid-emnet, og hva brukes de til?

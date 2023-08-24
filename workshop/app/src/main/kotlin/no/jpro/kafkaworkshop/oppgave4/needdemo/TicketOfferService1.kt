@@ -1,20 +1,19 @@
-package no.jpro.kafkaworkshop.oppgave4.oppgave4f
+package no.jpro.kafkaworkshop.oppgave4.needdemo
 
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageListener
-import no.jpro.kafkaworkshop.logger
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
 
 fun main() {
-    TicketOfferService2().listen("TicketOfferService2-listener-1")
+    TicketOfferService1().listen("TicketOfferService1-listener-1")
 }
 
-open class TicketOfferService2(private val messageProducer: MessageProducer = MessageProducer()) :
+open class TicketOfferService1(private val messageProducer: MessageProducer = MessageProducer()) :
     MessageListener(messageProducer) {
 
     override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
         return originalMessage.copyWithAdditionalData(
             this::class.simpleName!!,
-            mapOf("ticketOffer" to RapidConfiguration.messageNodeFactory.numberNode(25))
+            mapOf("ticketOffer" to RapidConfiguration.messageNodeFactory.numberNode(22))
         )
     }
 

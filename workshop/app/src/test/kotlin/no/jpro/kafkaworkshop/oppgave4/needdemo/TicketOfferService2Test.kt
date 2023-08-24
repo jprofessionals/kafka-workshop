@@ -2,18 +2,18 @@ import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
-import no.jpro.kafkaworkshop.oppgave4.oppgave4f.TicketOfferService1
+import no.jpro.kafkaworkshop.oppgave4.needdemo.TicketOfferService2
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 
-class TicketOfferService1Test {
+class TicketOfferService2Test {
 
     private lateinit var mockMessageProducer: MessageProducer
-    private lateinit var ticketOfferService1: TestableTicketOfferService1
+    private lateinit var ticketOfferService2: TestableTicketOfferService2
 
-    class TestableTicketOfferService1(messageProducer: MessageProducer) : TicketOfferService1(messageProducer) {
+    class TestableTicketOfferService2(messageProducer: MessageProducer) : TicketOfferService2(messageProducer) {
         public override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
             return super.shouldProcessMessage(incomingMessage)
         }
@@ -26,7 +26,7 @@ class TicketOfferService1Test {
     @BeforeEach
     fun setUp() {
         mockMessageProducer = Mockito.mock(MessageProducer::class.java)
-        ticketOfferService1 = TestableTicketOfferService1(mockMessageProducer)
+        ticketOfferService2 = TestableTicketOfferService2(mockMessageProducer)
     }
 
     @Test
@@ -34,7 +34,7 @@ class TicketOfferService1Test {
         val testData = mapOf(
             "need" to RapidConfiguration.messageNodeFactory.textNode("ticketOffer")
         )
-        assertThat(ticketOfferService1.shouldProcessMessage(testData)).isTrue
+        assertThat(ticketOfferService2.shouldProcessMessage(testData)).isTrue
     }
 
     @Test
@@ -43,7 +43,7 @@ class TicketOfferService1Test {
             "need" to RapidConfiguration.messageNodeFactory.textNode("ticketOffer"),
             "ticketOffer" to RapidConfiguration.messageNodeFactory.textNode("VIP")
         )
-        assertThat(ticketOfferService1.shouldProcessMessage(testData)).isFalse
+        assertThat(ticketOfferService2.shouldProcessMessage(testData)).isFalse
     }
 
     @Test
@@ -53,7 +53,8 @@ class TicketOfferService1Test {
                 "need" to RapidConfiguration.messageNodeFactory.textNode("ticketOffer")
             )
         )
-        val processedMessage = ticketOfferService1.processMessage(originalMessage)
-        assertThat(processedMessage!!.payload["ticketOffer"]?.numberValue()).isEqualTo(22)
+        val processedMessage = ticketOfferService2.processMessage(originalMessage)
+        assertThat(processedMessage!!.payload["ticketOffer"]?.numberValue()).isEqualTo(25)
     }
 }
+

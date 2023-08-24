@@ -1,17 +1,17 @@
-package no.jpro.kafkaworkshop.oppgave4.oppgave4f
+package no.jpro.kafkaworkshop.oppgave4.needdemo
 
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageListener
 import no.jpro.kafkaworkshop.logger
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageListener
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
 
 fun main() {
-    TicketOfficeService().apply {
+    TravelService().apply {
         start()
-        listen("TicketOfficeService-listener-1")
+        listen("TravelService-listener-1")
     }
 }
 
-open class TicketOfficeService(private val messageProducer: MessageProducer = MessageProducer()) :
+open class TravelService(private val messageProducer: MessageProducer = MessageProducer()) :
     MessageListener(messageProducer) {
     fun start() {
         val applicationName = this::class.simpleName.toString()
@@ -32,7 +32,8 @@ open class TicketOfficeService(private val messageProducer: MessageProducer = Me
     }
 
     override fun processMessage(originalMessage: RapidMessage): RapidMessage? {
-
+        val offer = originalMessage.payload["ticketOffer"]?.asText()
+        logger().info("Ticket offer received, offer: $offer")
         val additionalData = mapOf("processed" to RapidConfiguration.messageNodeFactory.booleanNode(true))
         return originalMessage.copyWithAdditionalData(this::class.simpleName!!, additionalData)
     }

@@ -1,26 +1,23 @@
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.MessageProducer
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.Payload
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidConfiguration
-import no.jpro.kafkaworkshop.oppgave4.oppgave4a.RapidMessage
-import no.jpro.kafkaworkshop.oppgave4.oppgave4f.TicketOfficeService
+import no.jpro.kafkaworkshop.oppgave4.needdemo.TravelService
+import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-class TicketOfficeServiceTest {
+class TravelServiceTest {
 
     private lateinit var mockMessageProducer: MessageProducer
-    private lateinit var ticketOfficeService: TestableTicketOfficeService
+    private lateinit var travelService: TestableTravelService
 
     val expectedMessage = RapidMessage.fromData(
-        TestableTicketOfficeService::class.simpleName.toString(), "ticketEvent", mapOf(
+        TestableTravelService::class.simpleName.toString(), "ticketEvent", mapOf(
             "need" to RapidConfiguration.messageNodeFactory.textNode("ticketOffer")
         )
     )
 
-    class TestableTicketOfficeService(messageProducer: MessageProducer) : TicketOfficeService(messageProducer) {
+    class TestableTravelService(messageProducer: MessageProducer) : TravelService(messageProducer) {
         public override fun shouldProcessMessage(incomingMessage: Payload): Boolean {
             return super.shouldProcessMessage(incomingMessage)
         }
@@ -33,12 +30,12 @@ class TicketOfficeServiceTest {
     @BeforeEach
     fun setUp() {
         mockMessageProducer = Mockito.mock(MessageProducer::class.java)
-        ticketOfficeService = TestableTicketOfficeService(mockMessageProducer)
+        travelService = TestableTravelService(mockMessageProducer)
     }
 
     @Test
     fun `should start and send a message with a need for ticketOffer`() {
-        ticketOfficeService.start()
+        travelService.start()
 
         verify(mockMessageProducer).send(expectedMessage)
     }
@@ -49,7 +46,7 @@ class TicketOfficeServiceTest {
             "ticketOffer" to RapidConfiguration.messageNodeFactory.textNode("VIP"),
             "processed" to RapidConfiguration.messageNodeFactory.booleanNode(false)
         )
-        assertThat(ticketOfficeService.shouldProcessMessage(testData)).isTrue
+        assertThat(travelService.shouldProcessMessage(testData)).isTrue
     }
 
     @Test
@@ -57,7 +54,7 @@ class TicketOfficeServiceTest {
         val testData = mapOf(
             "processed" to RapidConfiguration.messageNodeFactory.booleanNode(false)
         )
-        assertThat(ticketOfficeService.shouldProcessMessage(testData)).isFalse
+        assertThat(travelService.shouldProcessMessage(testData)).isFalse
     }
 
     @Test
@@ -66,7 +63,7 @@ class TicketOfficeServiceTest {
             "ticketOffer" to RapidConfiguration.messageNodeFactory.textNode("VIP"),
             "processed" to RapidConfiguration.messageNodeFactory.booleanNode(true)
         )
-        assertThat(ticketOfficeService.shouldProcessMessage(testData)).isFalse
+        assertThat(travelService.shouldProcessMessage(testData)).isFalse
     }
 
     @Test
@@ -76,7 +73,7 @@ class TicketOfficeServiceTest {
                 "ticketOffer" to RapidConfiguration.messageNodeFactory.textNode("VIP")
             )
         )
-        val processedMessage = ticketOfficeService.processMessage(originalMessage)
+        val processedMessage = travelService.processMessage(originalMessage)
         assertThat(processedMessage!!.payload["processed"]?.booleanValue()).isTrue
     }
 }

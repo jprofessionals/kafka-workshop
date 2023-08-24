@@ -1,10 +1,9 @@
 import no.jpro.kafkaworkshop.oppgave4.oppgave4a.*
-import no.jpro.kafkaworkshop.oppgave4.oppgave4f.TicketOfferService1
+import no.jpro.kafkaworkshop.oppgave4.needdemo.TicketOfferService1
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.verify
 
 class TicketOfferService1Test {
 

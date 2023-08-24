@@ -14,7 +14,7 @@ Dette nye feltet skal eksistere på samme nivå i json som 'productExternalId'.
 Opprett en main-funksjon og klassestruktur for IdMappingService, lik den du lagde for MessageLoggerService. Kommenter inn enhetstesten for klassen.
 Husk å bruke en annen consumerGroupId enn i forrige oppgave for å unngå konflikter i meldingsfordeling.
 Du må denne gangen sende inn en messageProducer i konstruktøren, siden vi også skal sende en kvitteringsmelding.
-IdMappingService(messageProducer: MessageProducer = MessageProducer())
+open class IdMappingService(messageProducer: MessageProducer = MessageProducer()) : MessageListener() {
 
 ### ShouldProcessMessage funksjonen
 Denne metoden kjøres to ganger: først på den innkommende meldingen fra Rapid for å avgjøre om den skal behandles, og deretter på den nyproduserte meldingen for å forhindre evig løkke. 
@@ -43,13 +43,16 @@ Metoden skal mappe 'productExternalId' til 'productInternalId' og returnere den 
         )
 ```
 
+### Utfør todo for mapping til ny kode
+Sjekk at klassen nå komppilerer
+
 ### Utfør Tester
 Kjør enhetstestene for IdMappingService og bekreft at de nå passerer.
 
 ## Test IdMappingService mot Rapid-topic
+Pass på at IdMappingService og MessageLoggerService har forskjellig consumerGroupId
 Start IdMappingService.
 Sørg for at MessageLoggerService også kjører.
-Vent til begge logger meldingen "Successfully joined group."
 Kjør NewProductsMessageProducer for å sende en testmelding.
 
 ## Forventet utskrifdt i MessageLoggerService

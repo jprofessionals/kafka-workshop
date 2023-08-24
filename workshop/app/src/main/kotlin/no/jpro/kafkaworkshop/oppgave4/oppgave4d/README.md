@@ -2,7 +2,7 @@
 
 ##  Formål
 Oppgaven har som formål å lage en komponent som bruker den interne ID-en generert av IdMappingService fra Oppgave 4c.
-Denne klasssen sender ikke meldinger til ny komponent. For å sikre at også CustomerService ligger som Participating system, legger vi en kvitteringsmelding på rapid.
+Denne klasssen sender ikke meldinger til ny komponent. For å sikre at også CustomerService ligger som Participating system, skal den legge en kvitteringsmelding på rapid.
 
 
 ## Overordnet beskrivelse
@@ -11,16 +11,16 @@ CustomerService vil ta imot meldinger fra IdMappingService og utføre operasjone
 ## CustomerService
 
 ### Kodeskjelett og test
-Benytt tidligere oppgaver som referanse for å sette opp et grunnleggende kodeskjelett og kjøre en initiell test som vil feile. 
+Benytt tidligere oppgaver som referanse for å sette opp et grunnleggende kodeskjelett. 
 Husk å bruke en annen consumerGroupId for å unngå å motta meldinger ment for andre komponenter.
 
-### Entry kriteria 
+### Filter (shouldProcessMessage) 
 Meldingen må ha et produktfelt: ```kotlin incomingMessage["product"]?.isNotNull() ?: false```
 Meldingen må ha en intern produkt-ID: ```kotlin incomingMessage["productInternalId"]?.isNotNull() ?: false```
 Meldingen må ikke allerede være behandlet: ```kotlin incomingMessage["processed"]?.booleanValue() != true```
 
 ### Tilleggsdata for ny melding(kvittering til rapid)
-```kotlin mapOf("processed" to RapidConfiguration.messageNodeFactory.booleanNode(true))```
+    ```kotlin mapOf("processed" to RapidConfiguration.messageNodeFactory.booleanNode(true))```
 
 ### Utfør Enhetstest
 Kjør enhetstesten for CustomerService og bekreft at den nå går grønt.

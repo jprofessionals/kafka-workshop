@@ -14,23 +14,23 @@ import org.apache.kafka.streams.kstream.ValueMapper
 import java.util.*
 
 fun main() {
-    MetricService().start()
+    GraphService().start()
 }
 
 /**
- * MetricService: A Kafka Streams Application
+ * GraphService: A Kafka Streams Application
  *
- * This class defines a Kafka Streams application named 'MetricService'.
+ * This class defines a Kafka Streams application named 'GraphService'.
  * The purpose of the application is to consume records from a Kafka topic
  * configured in `RapidConfiguration`, and calculate vector counts based
  * on the `participatingSystems` field in each JSON message.
  *
  * Vector counts are then logged for further use or analysis.
  */
-class MetricService {
+class GraphService {
 
     fun start() {
-        val applicationId = "metricService-1"
+        val applicationId = "graphService-1"
         val bootstrapServers = "localhost:9092"
         val stateDir = "ktables"
 

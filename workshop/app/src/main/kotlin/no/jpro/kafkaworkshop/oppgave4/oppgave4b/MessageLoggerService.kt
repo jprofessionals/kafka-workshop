@@ -16,7 +16,6 @@ fun main() {
 open class MessageLoggerService : MessageListener() {
     // TODO: Insert override methods from MessageListener and implement the methods.
     // This service should pick all messages from the rapid
-    // Make sure no confirmation message is sent to the rapid topic.
-    // Use logger().info(...) to write the message to the log.
-
+    // Make sure no confirmation message is sent to the rapid topic, do not return a message from processMessage.
+    // Use logger().info(...) to write the message to the log. Use .toJsonText to write it as json.
 }*/

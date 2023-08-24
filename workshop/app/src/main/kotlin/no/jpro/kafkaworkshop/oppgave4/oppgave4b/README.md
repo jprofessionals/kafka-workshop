@@ -1,14 +1,14 @@
 # Oppgave 4b Message producer og message consumer mot rapid topic.
 
 ##  Formål
-Formålet med denne deloppgaven er å bli fortrolig med produksjon og lytting av rapid-meldinger. 
-Oppgaven involverer å lage komponenter som enkelt kan produsere og logge meldinger for Rapid-topicet.
+Formålet med denne oppgaven er å bli fortrolig med produksjon og lytting av rapid-meldinger. 
 
 ## Overordnet beskrivelse
-I denne deloppgaven vil vi utvikle en meldingsprodusent (NewProductsMessageProducer) som sender meldinger til Rapid-emnet. I tillegg vil vi også opprette en meldingslytter (MessageLoggerService) som vil logge alle meldinger på rapid-topicet.
+I denne oppgaven vil vi utvikle en meldingsprodusent (NewProductsMessageProducer) som sender meldinger til rapid-topicet. 
+I tillegg vil vi også opprette en meldingslytter (MessageLoggerService) som vil skrive ut alle meldinger på rapid-topicet.
 
 ## Nytt topic: "rapid-1"
-Se på oppskriften i oppgave 1, og lag et nytt topic som du kaller "rapid-1"
+Se på oppskriften i oppgave 1, og opprett et nytt topic som du kaller "rapid-1"
 
 ## NewProductsMessageProducer
 
@@ -26,11 +26,11 @@ Sørg for at NewProductsMessageProducerTest nå kjøres uten feil.
 ### Opprett klasse
 Kommenter inn koden for MessageLoggerService og generer metoder som skal overrides.
 
-### Forbered Enhetstesting
-Finn enhetstesten for klassen, aktiver den, kjør testen, og bekreft at den feiler.
-
 ### Fullfør MessageLoggerService
-Fullfør alle todos i koden og bekreft at testen nå kjøres uten feil.
+Fullfør alle todos i koden.
+
+### Forbered Enhetstesting
+Finn enhetstesten for klassen, aktiver den, kjør testen, og bekreft at den blir grønn.
 
 
 ## Test Komponentene mot rapid-topic

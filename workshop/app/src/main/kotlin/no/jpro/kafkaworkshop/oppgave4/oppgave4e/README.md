@@ -9,10 +9,10 @@ I denne oppgaven vil vi ikke generere fullstendige data for relasjonsdiagrammer.
 IdMappingService->CustomerService -> 5
 ```
 
-## MetricService
-Kopier koden fra oppgave 2c (kafka streams, gi klassen nytt navn: MetricService. Bytt til å bruke rapid topicet, 'rapid-1'.
+## GraphService
+Kopier koden fra oppgave 2c (kafka streams, gi klassen nytt navn: GraphService. Bytt til å bruke rapid topicet, 'rapid-1'.
 
-### Kjør MetricService
+### Kjør GraphService
 Start tjenesten og verifiser at den teller ord i rapid-topicet.
 
 ### Lag en vectorCounter
@@ -47,12 +47,12 @@ val vectorCounter: ValueMapper<String, Iterable<String>> = ValueMapper { value -
 ### Enhetstest
 Finn den enhetstesten, kommenter den inn, og pass på at den går grønt.
 
-### Kjør MetricService mot rapid
-Start MetricService.
+### Kjør GraphService mot rapid
+Start GraphService.
 Kjør scenariet som beskrevet i Oppgave 4d, 
 der en melding sendes via NewProductsMessageProducer og går gjennom alle de andre tjenestene.
 
-## Forventet output fra MetricService
+## Forventet output fra GraphService
 ````
 vector: NewProductsMessageProducer->IdMappingService -> <Antall>
 vector: IdMappingService->CustomerService -> <Antall>

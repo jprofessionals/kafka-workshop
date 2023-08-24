@@ -14,7 +14,7 @@ Eksempelet i vårt case er en flybilettjeneste der vi etterspør flybiletter, og
 Ticket offer received, offer: 25
 Ticket offer received, offer: 22
 
-### MetricService(om den er startet)
+### GraphService(om den er startet)
 TravelService->TicketOfferService1 -> <Antall>
 TravelService->TicketOfferService2 -> <Antall>
 TicketOfferService1->TravelService -> <Antall>

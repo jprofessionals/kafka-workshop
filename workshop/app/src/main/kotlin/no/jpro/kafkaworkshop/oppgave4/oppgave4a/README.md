@@ -27,8 +27,8 @@ Abstrakt klasse som kan brukes for å lytte på rapid-meldinger.
 Gå gjennom klassene, tenk gjennom hva de gjør, og se om du kan svare på følgende spørsmål
 
 ### Autocommit
-Hvis en melding feiler, hopper applikasjonen videre til neste melding, eller vil den bli prosessert på nytt?
-Om flagget for autocommit blir satt til false, vil koden sørge for at meldinger som feiler blir forsøkt plukket igjen? Er det noen mangler i koden for dette, eller ville det fungere som forventet å skru av autocommit?
+Hvis en melding feiler, hopper applikasjonen likevel videre til neste melding. Det fungerer greit i en workshop.
+Hvis vi på et tidspunkt endrer til autocommit false, går vi ikke til neste melding. Se på den logikken, og sjekk også om applikasjonen også vil stanse ved feil.
 
 ### Problemer med evig Løkke
 Når en applikasjon både sender og lytter til det samme topicet, kan det oppstå en situasjon hvor applikasjonen lytter på sin egen melding, som resulterer i en evig løkke. 

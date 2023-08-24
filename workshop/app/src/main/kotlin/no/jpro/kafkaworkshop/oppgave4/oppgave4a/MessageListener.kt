@@ -100,7 +100,9 @@ abstract class MessageListener(private val messageProducer: MessageProducer = Me
                 }
             } ?: logger().error("Error deserializing record value: ${record.value()}")
         } catch (e: Exception) {
-            logger().error("Exception while processing message: ${e.message}")
+            logger().error("Exception while processing message: ${e.stackTraceToString()}")
+            // throw e // Should throw and stop the application in a production environment
+            // It is bettter to stop the application, fix the problem, and continue on the same message to ensure that no messages are lost
         }
     }
 

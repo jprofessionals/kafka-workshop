@@ -1,7 +1,7 @@
 # Oppgave 4e Bruk av Kafka Streams for Logging av Tjenestekall
 
 ##  Formål
-Når en Rapids & Rivers (R&R) applikasjon blir større, kan det være utfordrende å holde oversikt over tjenestenes interaksjoner. Målet her er å logge og telle vektorer som representerer kall mellom tjenester for å lettere kunne analysere systemets relasjoner.
+Når en Rapids & Rivers (R&R) applikasjon blir større, kan det være utfordrende å holde oversikt over interaksjonene mellomg tjenestene. Målet i denne oppgaven er å logge og telle vektorer som representerer kall mellom tjenester, for å lettere kunne analysere systemets relasjoner.
 
 ## Overordnet beskrivelse
 I denne oppgaven vil vi ikke generere fullstendige data for relasjonsdiagrammer. I stedet vil vi fokusere på å telle og logge vektorer som viser interaksjoner mellom tjenester i følgende format:
@@ -10,12 +10,12 @@ IdMappingService->CustomerService -> 5
 ```
 
 ## MetricService
-Kopier Kafka Streams-koden fra Oppgave 2c, gi den navnet MetricService, og sikre at den bruker rapid-topicet.
+Kopier Kafka Streams-koden fra Oppgave 2c, g gi den navnet MetricService. Bytt til å bruke rapid-topicet.
 
 ### Kjør MetricService
-Start tjenesten og verifiser at den teller ord i Rapid-emnet.
+Start tjenesten og verifiser at den teller ord i rapid-topicet.
 
-### Lag en vectorCounter, og bruk den i steden for ordteller:
+### Lag en vectorCounter, og bruk den i steden for wordCounts:
 ```kotlin
   /**
  * A ValueMapper function that reads a JSON string, extracts a
@@ -44,7 +44,7 @@ val vectorCounter: ValueMapper<String, Iterable<String>> = ValueMapper { value -
 ```
 
 ### Enhetstest
-Finn den relevante testen, aktiver den, og se til at den går grønt.
+Finn den enhetstesten, kommenter den inn, og pass på at den går grønt.
 
 ### Kjør MetricService mot rapid
 Start MetricService.

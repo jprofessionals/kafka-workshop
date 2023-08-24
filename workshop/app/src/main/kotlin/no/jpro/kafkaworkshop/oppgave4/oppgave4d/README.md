@@ -1,8 +1,8 @@
 # Oppgave 4d CustomerService
 
 ##  Formål
-Oppgaven har som mål å lage en komponent som bruker den interne ID-en generert av IdMappingService fra Oppgave 4c.
-Denne klasssen sender ikke meldinger til ny komponent. For å sikre at CustomerService ligger som Participating system, legger vi en kvitteringsmelding på rapid.
+Oppgaven har som formål å lage en komponent som bruker den interne ID-en generert av IdMappingService fra Oppgave 4c.
+Denne klasssen sender ikke meldinger til ny komponent. For å sikre at også CustomerService ligger som Participating system, legger vi en kvitteringsmelding på rapid.
 
 
 ## Overordnet beskrivelse
@@ -11,7 +11,7 @@ CustomerService vil ta imot meldinger fra IdMappingService og utføre operasjone
 ## CustomerService
 
 ### Kodeskjelett og test
-Benytt tidligere oppgaver som referanse for å sette opp et grunnleggende kodeskjelett og kjøre en initial test som vil feile. 
+Benytt tidligere oppgaver som referanse for å sette opp et grunnleggende kodeskjelett og kjøre en initiell test som vil feile. 
 Husk å bruke en annen consumerGroupId for å unngå å motta meldinger ment for andre komponenter.
 
 ### Entry kriteria 
@@ -27,7 +27,7 @@ Kjør enhetstesten for CustomerService og bekreft at den nå går grønt.
 
 ## Kjør Customerservice mot rapid
 Start opp CustomerService.
-Sørg for at både MessageLoggerService og IdMappingService også er i drift.
+Sørg for at både MessageLoggerService og IdMappingService også kjører.
 Vent til alle tre tjenestene logger meldingen "Successfully joined group."
 Kjør NewProductsMessageProducer for å generere en ny melding.
 

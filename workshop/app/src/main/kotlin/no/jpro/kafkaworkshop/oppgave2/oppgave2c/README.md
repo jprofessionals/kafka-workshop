@@ -45,8 +45,6 @@ val builder = StreamsBuilder()
 val textLines: KStream<String, String> = builder.stream(inputTopic)
 ```
 
-## Lag 
-
 ## Tell antall forekomster av et ord og logg antallet
 Hvis et ord forekommer flere ganger i en melding, skal det telles hver gang.
  ```kotlin

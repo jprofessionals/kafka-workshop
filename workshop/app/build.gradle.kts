@@ -1,6 +1,7 @@
 plugins {
     java
     kotlin("jvm") version "1.8.20"
+    id("com.github.davidmc24.gradle.plugin.avro") version "1.8.0"
 }
 
 group = "no.jpro.kafkaworkshop"
@@ -19,8 +20,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
+    implementation("io.confluent:kafka-avro-serializer:7.4.1")
     implementation(kotlin("stdlib"))
-
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")

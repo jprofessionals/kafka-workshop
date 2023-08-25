@@ -22,9 +22,9 @@ cd single-node-avro-kafka
 docker-compose up
 ```
 
-### Installer IntelliJ Kafka plugin
+### Installer IntelliJ Kafka plugin (valgfritt)
 
-Installer Kafka-plugin i IntelliJ.
+Installer Kafka-plugin, hvis du har IntelliJ IDEA Ultimate Edition.
 Hvis du har IntelliJ-versjon < 2023.2, så installerer du Big Data Tools-plugin.
 
 Konfigurer plugin mot `localhost`:
@@ -50,14 +50,16 @@ Schema Registry:
 
 Sjekk at "Test connection" returnerer _"Connected"._
 
-### Installer Apache Avro IDL Schema Support plugin
+### Installer Apache Avro IDL Schema Support plugin (valgfritt)
 
-Apache Avro IDL Schema Support-pluginet krever ingen konfigurasjon,
+Apache Avro IDL Schema Support-pluginet til IntelliJ krever ingen konfigurasjon,
 men gir syntaks-støtte når vi redigerer Avro-skjema.
 
 ## Oppgave 3: Send og motta Avro-serialiserte meldinger
 
-Vi skal definere et Avro-skjema for samme meldingsstruktur som vi brukte i oppgave 2.
+Vi skal bruke samme meldingsstruktur som vi brukte i oppgave 2.
+
+### Steg 1 - opprette Avro-skjema
 
 Opprett Avro-skjema i `./src/main/avro/oppgave3/AvroMessage.avsc`:
 ```json
@@ -83,6 +85,8 @@ Generer modellklassen `no.jpro.kafkaworkshop.oppgave3.AvroMessage` med Gradle:
 ./gradlew generateAvroJava
 ```
 (det gjøres også automatisk under `./gradlew build`)
+
+### Steg 2 - Kode
 
 Ta utgangspunkt i Producer og Consumer fra oppgave 2a og 2b,
 og kopier klassene dine til `no.jpro.kafkaworkshop.oppgave3`.
@@ -152,8 +156,15 @@ Standard oppførsel ved publisering er at skjema blir registrert på subject `<t
 så det er ikke nødvendig med mer konfigurasjon,
 så lenge man kun har ett skjema per topic.
 
+### Steg 3 - Test
+
+Kjør Producer og Consumer, og se at meldingen kommer gjennom.
+
+Hvis du har Kafka-plugin i IntelliJ, kan du lager producer og consumer der også.
+
 ## Nyttige lenker
 
+* [Avro-spesifikasjon](https://avro.apache.org/docs/1.2.0/spec.html)
 * [Avro Schema Serializer and Deserializer](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html) - en guide
 * [Schema Evolution and Compatibility](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html#schema-evolution-and-compatibility)
 * [Schema Registry API Reference](https://docs.confluent.io/platform/current/schema-registry/develop/api.html#sr-api-reference)

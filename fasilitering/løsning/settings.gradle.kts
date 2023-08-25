@@ -10,5 +10,5 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
 }
 
-rootProject.name = "kafka-workshop"
+rootProject.name = "kafka-workshop-løsning"
 include("app")
